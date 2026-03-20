@@ -1,0 +1,2215 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Les Sens — Restaurant Nice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Tenor+Sans&family=Montserrat:wght@300;400;500&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F5EFE4;
+    --warm-white: #FAF7F2;
+    --dark: #0E0B08;
+    --charcoal: #1C1714;
+    --stone: #2E2820;
+    --gold: #C9A96E;
+    --gold-light: #E2C98A;
+    --terracotta: #A05C3B;
+    --sage: #7A8C6E;
+    --text-light: #D4C8B8;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: var(--cream);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* ─── GRAIN OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 28px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background 0.5s ease, padding 0.4s ease;
+  }
+
+  /* Burger — caché par défaut, visible sur mobile */
+  .burger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 6px;
+    z-index: 10;
+  }
+  .burger span {
+    display: block;
+    width: 24px; height: 1.5px;
+    background: var(--gold);
+    transition: all 0.3s ease;
+  }
+
+  /* Menu mobile overlay — caché par défaut */
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(14,11,8,0.98);
+    backdrop-filter: blur(16px);
+    z-index: 300;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+  }
+  .mobile-menu.open { display: flex; }
+
+  .mobile-menu-close {
+    position: absolute;
+    top: 28px; right: 28px;
+    width: 40px; height: 40px;
+    background: none;
+    border: 1px solid rgba(201,169,110,0.3);
+    color: var(--gold);
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .mobile-menu-close:hover {
+    border-color: var(--gold);
+    background: rgba(201,169,110,0.08);
+  }
+
+  .mobile-menu-logo {
+    position: absolute;
+    top: 28px; left: 28px;
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+  }
+
+  .mobile-menu-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    width: 100%;
+  }
+
+  .mobile-menu-link {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.6rem, 7vw, 2.4rem);
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    color: var(--cream);
+    text-decoration: none;
+    padding: 18px 40px;
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid rgba(201,169,110,0.07);
+    transition: color 0.3s, background 0.3s;
+    position: relative;
+  }
+
+  .mobile-menu-link::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--gold);
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+    transform-origin: center;
+  }
+
+  .mobile-menu-link:first-child { border-top: 1px solid rgba(201,169,110,0.07); }
+
+  .mobile-menu-link:hover {
+    color: var(--gold);
+    background: rgba(201,169,110,0.04);
+  }
+  .mobile-menu-link:hover::before { transform: scaleY(1); }
+
+  .mobile-menu-cta {
+    margin-top: 36px;
+    font-family: 'Tenor Sans', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--dark);
+    background: var(--gold);
+    padding: 14px 40px;
+    text-decoration: none;
+    transition: background 0.3s;
+  }
+  .mobile-menu-cta:hover { background: var(--gold-light); }
+
+  nav.scrolled {
+    background: rgba(14, 11, 8, 0.92);
+    backdrop-filter: blur(12px);
+    padding: 14px 60px;
+    border-bottom: 1px solid rgba(201, 169, 110, 0.15);
+  }
+
+  nav.scrolled .logo-emblem-square {
+    width: 36px; height: 36px;
+    transition: all 0.4s ease;
+  }
+
+  nav.scrolled .logo-emblem-mono {
+    font-size: 0.85rem;
+  }
+
+  nav.scrolled .logo-emblem-name {
+    font-size: 1.05rem;
+  }
+
+  /* ─── LOGO EMBLEM ─── */
+  .logo-emblem {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+  .logo-emblem-square {
+    position: relative;
+    width: 46px; height: 46px;
+    border: 1.5px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: border-color 0.3s;
+  }
+
+  .logo-emblem-square::before {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border: 1px solid rgba(201,169,110,0.25);
+  }
+
+  /* Coins dorés */
+  .logo-emblem-square::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    background:
+      linear-gradient(var(--gold), var(--gold)) top left / 8px 2px no-repeat,
+      linear-gradient(var(--gold), var(--gold)) top left / 2px 8px no-repeat,
+      linear-gradient(var(--gold), var(--gold)) top right / 8px 2px no-repeat,
+      linear-gradient(var(--gold), var(--gold)) top right / 2px 8px no-repeat,
+      linear-gradient(var(--gold), var(--gold)) bottom left / 8px 2px no-repeat,
+      linear-gradient(var(--gold), var(--gold)) bottom left / 2px 8px no-repeat,
+      linear-gradient(var(--gold), var(--gold)) bottom right / 8px 2px no-repeat,
+      linear-gradient(var(--gold), var(--gold)) bottom right / 2px 8px no-repeat;
+  }
+
+  .logo-emblem-mono {
+    font-family: 'Cinzel', serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 0.03em;
+    position: relative;
+    z-index: 1;
+    line-height: 1;
+  }
+
+  .logo-emblem-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .logo-emblem-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem;
+    font-weight: 300;
+    letter-spacing: 0.22em;
+    color: var(--cream);
+    text-transform: uppercase;
+    line-height: 1;
+    transition: color 0.3s;
+  }
+
+  .logo-emblem-sep {
+    height: 1px;
+    background: linear-gradient(to right, rgba(201,169,110,0.5), transparent);
+    margin: 5px 0 4px;
+  }
+
+  .logo-emblem-tag {
+    font-family: 'Tenor Sans', sans-serif;
+    font-size: 0.42rem;
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    color: rgba(201,169,110,0.55);
+  }
+
+  .logo-emblem:hover .logo-emblem-name { color: var(--gold-light); }
+  .logo-emblem:hover .logo-emblem-square { border-color: var(--gold-light); }
+
+  /* Taille réduite dans le footer */
+  .logo-emblem.sm .logo-emblem-square { width: 38px; height: 38px; }
+  .logo-emblem.sm .logo-emblem-mono { font-size: 0.9rem; }
+  .logo-emblem.sm .logo-emblem-name { font-size: 1.05rem; letter-spacing: 0.2em; }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    color: var(--cream);
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .nav-logo span {
+    color: var(--gold);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Tenor Sans', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    text-decoration: none;
+    transition: color 0.3s;
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0; right: 0;
+    height: 1px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+    transform-origin: left;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  .nav-cta {
+    font-family: 'Tenor Sans', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dark);
+    background: var(--gold);
+    padding: 10px 24px;
+    text-decoration: none;
+    transition: background 0.3s, transform 0.2s;
+  }
+
+  .nav-cta:hover {
+    background: var(--gold-light);
+    transform: translateY(-1px);
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 30% 60%, rgba(160, 92, 59, 0.18) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(201, 169, 110, 0.1) 0%, transparent 50%),
+      linear-gradient(160deg, #0E0B08 0%, #1C1714 40%, #141008 100%);
+  }
+
+  /* Decorative stone texture lines */
+  .hero-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(
+        92deg,
+        transparent,
+        transparent 180px,
+        rgba(201,169,110,0.03) 180px,
+        rgba(201,169,110,0.03) 181px
+      ),
+      repeating-linear-gradient(
+        2deg,
+        transparent,
+        transparent 120px,
+        rgba(201,169,110,0.02) 120px,
+        rgba(201,169,110,0.02) 121px
+      );
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 60px 100px;
+    max-width: 900px;
+    animation: fadeUp 1.2s ease both;
+    animation-delay: 0.3s;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Tenor Sans', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+    display: inline-block;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(4rem, 9vw, 9rem);
+    font-weight: 300;
+    line-height: 0.9;
+    color: var(--cream);
+    margin-bottom: 40px;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+    display: block;
+  }
+
+  .hero-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--text-light);
+    max-width: 480px;
+    line-height: 1.7;
+    margin-bottom: 52px;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    font-family: 'Tenor Sans', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--dark);
+    background: var(--gold);
+    padding: 16px 40px;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gold-light);
+    transform: translateX(-100%);
+    transition: transform 0.4s ease;
+  }
+
+  .btn-primary:hover::before { transform: translateX(0); }
+  .btn-primary span { position: relative; z-index: 1; }
+
+  .btn-ghost {
+    font-family: 'Tenor Sans', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--cream);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: color 0.3s;
+  }
+
+  .btn-ghost::after {
+    content: '→';
+    transition: transform 0.3s;
+  }
+
+  .btn-ghost:hover { color: var(--gold); }
+  .btn-ghost:hover::after { transform: translateX(6px); }
+
+  /* Hero decorative right element */
+  .hero-deco {
+    position: absolute;
+    right: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    animation: fadeIn 1.8s ease both;
+    animation-delay: 0.8s;
+  }
+
+  .hero-deco-circle {
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    border: 1px solid rgba(201, 169, 110, 0.2);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-deco-circle::before {
+    content: '';
+    position: absolute;
+    inset: 20px;
+    border-radius: 50%;
+    border: 1px solid rgba(201, 169, 110, 0.12);
+  }
+
+  .hero-deco-inner {
+    text-align: center;
+  }
+
+  .hero-deco-time {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.9rem;
+    font-style: italic;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    line-height: 2;
+  }
+
+  .hero-deco-divider {
+    width: 40px;
+    height: 1px;
+    background: rgba(201, 169, 110, 0.4);
+    margin: 12px auto;
+  }
+
+  .hero-deco-phone {
+    font-family: 'Tenor Sans', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    color: var(--text-light);
+  }
+
+  /* Rotating label */
+  .hero-deco-label {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    animation: spin 20s linear infinite;
+  }
+
+  .hero-deco-label textPath {
+    font-family: 'Tenor Sans', sans-serif;
+    font-size: 9px;
+    letter-spacing: 4px;
+    fill: rgba(201, 169, 110, 0.5);
+    text-transform: uppercase;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* ─── SCROLL INDICATOR ─── */
+  .scroll-hint {
+    position: absolute;
+    bottom: 40px;
+    right: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    z-index: 2;
+    animation: fadeIn 2s ease both;
+    animation-delay: 1.5s;
+  }
+
+  .scroll-hint span {
+    font-family: 'Tenor Sans', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(201, 169, 110, 0.5);
+    writing-mode: vertical-rl;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, rgba(201,169,110,0.5), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { transform: scaleY(1); opacity: 1; }
+    50% { transform: scaleY(0.6); opacity: 0.4; }
+  }
+
+  /* ─── SEPARATOR ─── */
+  .sep {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 0 60px;
+    margin: 0 auto;
+  }
+
+  .sep-line { flex: 1; height: 1px; background: rgba(201,169,110,0.15); }
+  .sep-diamond {
+    width: 6px; height: 6px;
+    background: var(--gold);
+    transform: rotate(45deg);
+    flex-shrink: 0;
+  }
+
+  /* ─── PHILOSOPHY SECTION ─── */
+  .philosophy {
+    padding: 140px 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .philosophy-illus {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 560px;
+  }
+
+  .philosophy-text {
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .section-label {
+    font-family: 'Tenor Sans', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .section-label::before {
+    content: '';
+    width: 30px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .philosophy-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.2rem, 4vw, 3.6rem);
+    font-weight: 300;
+    line-height: 1.15;
+    color: var(--cream);
+    margin-bottom: 32px;
+  }
+
+  .philosophy-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .philosophy-body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    line-height: 1.85;
+    color: var(--text-light);
+    font-weight: 300;
+    margin-bottom: 40px;
+  }
+
+  /* Badges grid */
+  .philosophy-badges {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .badge {
+    position: relative;
+    padding: 28px 22px 24px;
+    background: rgba(201,169,110,0.03);
+    border: 1px solid rgba(201,169,110,0.18);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    transition: background 0.4s, border-color 0.4s;
+    overflow: hidden;
+  }
+
+  /* Coins dorés décorés */
+  .badge::before,
+  .badge::after {
+    content: '';
+    position: absolute;
+    width: 12px; height: 12px;
+    transition: opacity 0.4s;
+  }
+
+  .badge::before {
+    top: -1px; left: -1px;
+    border-top: 2px solid var(--gold);
+    border-left: 2px solid var(--gold);
+    opacity: 0.6;
+  }
+
+  .badge::after {
+    bottom: -1px; right: -1px;
+    border-bottom: 2px solid var(--gold);
+    border-right: 2px solid var(--gold);
+    opacity: 0.6;
+  }
+
+  /* Coins supplémentaires via span interne */
+  .badge-corner-tr,
+  .badge-corner-bl {
+    position: absolute;
+    width: 12px; height: 12px;
+    transition: opacity 0.4s;
+    opacity: 0.6;
+  }
+
+  .badge-corner-tr {
+    top: -1px; right: -1px;
+    border-top: 2px solid var(--gold);
+    border-right: 2px solid var(--gold);
+  }
+
+  .badge-corner-bl {
+    bottom: -1px; left: -1px;
+    border-bottom: 2px solid var(--gold);
+    border-left: 2px solid var(--gold);
+  }
+
+  /* Ligne dorée déco en haut */
+  .badge-top-line {
+    position: absolute;
+    top: 0; left: 20px; right: 20px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(201,169,110,0.35), transparent);
+  }
+
+  .badge:hover {
+    border-color: rgba(201,169,110,0.45);
+    background: rgba(201,169,110,0.07);
+  }
+
+  .badge:hover::before,
+  .badge:hover::after,
+  .badge:hover .badge-corner-tr,
+  .badge:hover .badge-corner-bl { opacity: 1; }
+
+  /* Icône SVG */
+  .badge-icon-wrap {
+    width: 36px; height: 36px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .badge-icon-wrap svg {
+    width: 28px; height: 28px;
+    stroke: var(--gold);
+    fill: none;
+    stroke-width: 1.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0.85;
+    transition: opacity 0.3s, transform 0.4s;
+  }
+
+  .badge:hover .badge-icon-wrap svg {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+
+  .badge-content {}
+
+  .badge-title {
+    font-family: 'Tenor Sans', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 5px;
+  }
+
+  .badge-text {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.55;
+    letter-spacing: 0.02em;
+  }
+  /* ─── BLOC PHOTOS PHILOSOPHIE ─── */
+  .philosophy-visual {
+    position: relative;
+    height: 580px;
+  }
+
+  .phil-frame {
+    position: absolute;
+    border: 1px solid rgba(201,169,110,0.18);
+  }
+
+  .phil-frame-1 {
+    inset: 0 48px 48px 0;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    grid-template-rows: 1.5fr 1fr;
+    gap: 14px;
+    background: var(--dark);
+    padding: 14px;
+  }
+
+  .phil-photo {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+    transition: transform 0.85s cubic-bezier(0.25,0.46,0.45,0.94), filter 0.7s ease;
+    filter: brightness(0.7) saturate(0.75);
+  }
+
+  .phil-photo-span { grid-row: 1 / 3; }
+
+  /* Dégradé multicouche sur chaque cellule */
+  .phil-photo::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to top,   rgba(14,11,8,0.85) 0%, transparent 45%),
+      linear-gradient(to bottom, rgba(14,11,8,0.45) 0%, transparent 30%);
+    z-index: 1;
+    transition: opacity 0.6s ease;
+  }
+
+  /* Vignette latérale sur la grande photo */
+  .phil-photo-span::before {
+    background:
+      linear-gradient(to top,    rgba(14,11,8,0.85) 0%, transparent 40%),
+      linear-gradient(to right,  rgba(14,11,8,0.5)  0%, transparent 40%),
+      linear-gradient(to bottom, rgba(14,11,8,0.35) 0%, transparent 25%);
+  }
+
+  .phil-photo:hover {
+    transform: scale(1.05);
+    filter: brightness(0.92) saturate(0.95);
+  }
+  .phil-photo:hover::before { opacity: 0.55; }
+
+  /* Filet or au hover */
+  .phil-photo::after {
+    content: '';
+    position: absolute; inset: 0;
+    box-shadow: inset 0 0 0 1px rgba(201,169,110,0);
+    transition: box-shadow 0.45s; z-index: 2;
+  }
+  .phil-photo:hover::after {
+    box-shadow: inset 0 0 0 1px rgba(201,169,110,0.45);
+  }
+
+  .phil-photo-1 { background-image: url('https://les-sens-nice.fr/wp-content/uploads/2025/12/Capture-decran-2021-05-13-a-18.31.50-1349x800.png'); }
+  .phil-photo-2 { background-image: url('https://les-sens-nice.fr/wp-content/uploads/2025/12/Capture-decran-2021-05-13-a-18.53.28.png'); }
+  .phil-photo-3 { background-image: url('https://les-sens-nice.fr/wp-content/uploads/2025/12/Capture-decran-2021-05-13-a-19.00.36.png'); }
+
+  .phil-frame-2 {
+    bottom: 0; right: 0;
+    width: 195px; height: 195px;
+    background: var(--stone);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-color: rgba(201,169,110,0.3);
+  }
+
+  .phil-frame-2-content {
+    text-align: center;
+    padding: 20px;
+  }
+
+  .phil-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5rem;
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .phil-number-label {
+    font-family: 'Tenor Sans', sans-serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-top: 8px;
+    line-height: 1.6;
+  }
+
+    .award-logos {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 30px;
+  }
+
+  .award-badge {
+    text-align: center;
+  }
+
+  .award-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .award-sub {
+    font-family: 'Tenor Sans', sans-serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-top: 4px;
+  }
+
+  .award-divider {
+    width: 1px;
+    height: 20px;
+    background: rgba(201,169,110,0.3);
+  }
+
+  /* ─── MENU SECTION ─── */
+  .menu-section {
+    background: var(--charcoal);
+    padding: 120px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .menu-section::before {
+    content: 'MENU';
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.018);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .menu-header {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+
+  .menu-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+
+  .menu-title em { font-style: italic; color: var(--gold); }
+
+  .menu-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--text-light);
+  }
+
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    max-width: 1200px;
+    margin: 0 auto 60px;
+  }
+
+  .menu-card {
+    background: rgba(255,255,255,0.02);
+    padding: 50px 40px;
+    border: 1px solid rgba(201,169,110,0.08);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+    color: inherit;
+  }
+
+  .menu-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+    transform-origin: left;
+  }
+
+  .menu-card:hover {
+    background: rgba(201,169,110,0.05);
+    border-color: rgba(201,169,110,0.25);
+    transform: translateY(-4px);
+  }
+
+  .menu-card:hover::before { transform: scaleX(1); }
+
+  .menu-card-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 5rem;
+    font-weight: 300;
+    color: rgba(201,169,110,0.12);
+    line-height: 1;
+    margin-bottom: 24px;
+    transition: color 0.4s;
+  }
+
+  .menu-card:hover .menu-card-number {
+    color: rgba(201,169,110,0.25);
+  }
+
+  .menu-card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: var(--cream);
+    margin-bottom: 16px;
+  }
+
+  .menu-card-desc {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.7;
+    letter-spacing: 0.02em;
+    margin-bottom: 28px;
+  }
+
+  .menu-card-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .menu-card-arrow {
+    position: absolute;
+    top: 40px; right: 40px;
+    width: 32px; height: 32px;
+    border: 1px solid rgba(201,169,110,0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    color: var(--gold);
+    transition: all 0.3s;
+  }
+
+  .menu-card:hover .menu-card-arrow {
+    background: var(--gold);
+    color: var(--dark);
+    transform: rotate(45deg);
+  }
+
+  .menu-cta-wrap {
+    text-align: center;
+  }
+
+  /* ─── GALERIE ÉDITORIALE ─── */
+  /* ─── GALERIE CHIC ─── */
+  .galerie {
+    padding: 0 0 160px;
+    background: var(--dark);
+  }
+
+  .galerie-header {
+    text-align: center;
+    padding: 140px 60px 80px;
+  }
+
+  .galerie-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.2rem, 4vw, 3.8rem);
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.1;
+    margin-bottom: 14px;
+  }
+
+  .galerie-title em { font-style: italic; color: var(--gold); }
+
+  .galerie-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--text-light);
+  }
+
+  /* ─ Ligne 1 : 3 photos espacées ─ */
+  .galerie-row-1 {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 24px;
+    padding: 0 60px;
+    margin-bottom: 24px;
+  }
+
+  /* ─ Ligne 2 : 4 photos espacées ─ */
+  .galerie-row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr 1fr 1fr;
+    gap: 24px;
+    padding: 0 60px;
+  }
+
+  /* ─ Carte photo ─ */
+  .gal-card {
+    position: relative;
+    overflow: hidden;
+    background: #08060400;
+    cursor: pointer;
+  }
+
+  /* Hauteurs */
+  .galerie-row-2 .gal-card { height: 420px; }
+
+  /* Photo avec filtre tamisé par défaut */
+  .gal-card-photo {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.72) saturate(0.75) contrast(1.05);
+    transition:
+      transform 1s cubic-bezier(0.25,0.46,0.45,0.94),
+      filter 0.7s ease;
+  }
+
+  /* Hover : la photo s'illumine */
+  .gal-card:hover .gal-card-photo {
+    transform: scale(1.06);
+    filter: brightness(0.95) saturate(1.0) contrast(1.0);
+  }
+
+  /* Dégradé profond multicouche */
+  .gal-card-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(
+        to top,
+        rgba(14,11,8,0.92) 0%,
+        rgba(14,11,8,0.5)  20%,
+        rgba(14,11,8,0.1)  50%,
+        transparent 70%
+      ),
+      linear-gradient(
+        to bottom,
+        rgba(14,11,8,0.55) 0%,
+        transparent 30%
+      );
+    z-index: 1;
+    transition: opacity 0.6s ease;
+  }
+
+  .gal-card:hover .gal-card-overlay { opacity: 0.6; }
+
+  /* Filet or inset */
+  .gal-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 0 1px rgba(201,169,110,0);
+    transition: box-shadow 0.5s ease;
+    pointer-events: none;
+    z-index: 4;
+  }
+  .gal-card:hover::after {
+    box-shadow: inset 0 0 0 1px rgba(201,169,110,0.55);
+  }
+
+  /* Légende bas de photo */
+  .gal-card-caption {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 28px 28px 26px;
+    z-index: 2;
+    transform: translateY(16px);
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
+  }
+
+  .gal-card:hover .gal-card-caption { transform: translateY(0); opacity: 1; }
+
+  .gal-card-caption-line {
+    width: 24px; height: 1px;
+    background: var(--gold);
+    margin-bottom: 9px;
+  }
+
+  .gal-card-caption-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--cream);
+    letter-spacing: 0.04em;
+  }
+
+  /* Sources */
+  .gp1 { background-image: url('https://les-sens-nice.fr/wp-content/uploads/2025/12/Capture-decran-2021-05-13-a-18.31.50-1349x800.png'); }
+  .gp2 { background-image: url('https://les-sens-nice.fr/wp-content/uploads/2025/12/Capture-decran-2021-05-13-a-19.10.07.png'); }
+  .gp3 { background-image: url('https://les-sens-nice.fr/wp-content/uploads/2025/12/Capture-decran-2021-05-13-a-18.58.15.png'); }
+  .gp4 { background-image: url('https://les-sens-nice.fr/wp-content/uploads/2025/12/Capture-decran-2021-05-13-a-18.53.28.png'); }
+  .gp5 { background-image: url('https://les-sens-nice.fr/wp-content/uploads/2025/12/Capture-decran-2021-05-13-a-18.56.31.png'); }
+  .gp6 { background-image: url('https://les-sens-nice.fr/wp-content/uploads/2025/12/Capture-decran-2021-05-13-a-19.00.36.png'); }
+  .gp7 { background-image: url('https://les-sens-nice.fr/wp-content/uploads/2025/12/Capture-decran-2021-05-13-a-19.03.08.png'); }
+  .gp8 { background-image: url('https://les-sens-nice.fr/wp-content/uploads/2025/12/Capture-decran-2021-05-13-a-19.06.04.png'); }
+
+  @media (max-width: 900px) {
+    .galerie { padding: 0 0 80px; }
+    .galerie-header { padding: 80px 28px 56px; }
+    .galerie-row-2 { grid-template-columns: 1fr 1fr; gap: 14px; padding: 0 20px; }
+    .galerie-row-2 .gal-card { height: 260px; }
+    .gal-card-caption { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── LOCATION SECTION ─── */
+  .location {
+    padding: 120px 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .location-visual {
+    position: relative;
+    height: 500px;
+  }
+
+  .map-frame {
+    position: absolute;
+    inset: 0 40px 40px 0;
+    border: 1px solid rgba(201,169,110,0.2);
+    overflow: hidden;
+  }
+
+  /* Iframe Google Maps */
+  .map-frame iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+    /* Filtre sombre pour s'harmoniser avec le site */
+    filter: grayscale(30%) brightness(0.75) contrast(1.1) saturate(0.8);
+    transition: filter 0.5s ease;
+  }
+
+  .map-frame:hover iframe {
+    filter: grayscale(0%) brightness(0.9) contrast(1.0) saturate(1.0);
+  }
+
+  /* Overlay doré en haut pour fondre avec la page */
+  .map-frame::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 60px;
+    background: linear-gradient(to bottom, rgba(14,11,8,0.6), transparent);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .location-accent {
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 140px; height: 140px;
+    background: var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .location-accent-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.8rem;
+    font-style: italic;
+    color: var(--dark);
+    text-align: center;
+    line-height: 1.4;
+    padding: 10px;
+  }
+
+  .location-info {}
+
+  .location-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 3.2rem);
+    font-weight: 300;
+    color: var(--cream);
+    margin-bottom: 32px;
+    line-height: 1.15;
+  }
+
+  .location-title em { font-style: italic; color: var(--gold); }
+
+  .location-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 40px;
+    border: 1px solid rgba(201,169,110,0.12);
+  }
+
+  .loc-detail {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 24px 28px;
+    border-bottom: 1px solid rgba(201,169,110,0.08);
+    transition: background 0.3s;
+  }
+
+  .loc-detail:last-child { border-bottom: none; }
+  .loc-detail:hover { background: rgba(201,169,110,0.04); }
+
+  .loc-detail-icon {
+    font-size: 1.1rem;
+    color: var(--gold);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .loc-detail-content {}
+
+  .loc-detail-label {
+    font-family: 'Tenor Sans', sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+
+  .loc-detail-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    color: var(--cream);
+    line-height: 1.5;
+  }
+
+  .hours-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 20px;
+  }
+
+  .hour-item {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 300;
+    color: var(--text-light);
+    letter-spacing: 0.04em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .hour-item .day { color: var(--cream); }
+  .hour-closed { color: rgba(201,169,110,0.4) !important; font-style: italic; }
+
+  /* ─── RESERVATION SECTION ─── */
+  .reservation {
+    background: var(--charcoal);
+    padding: 120px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .reservation::before {
+    content: '';
+    position: absolute;
+    top: -100px; left: 50%;
+    transform: translateX(-50%);
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,169,110,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .reservation-eyebrow {
+    font-family: 'Tenor Sans', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+  }
+
+  .reservation-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 5vw, 5rem);
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+
+  .reservation-title em { font-style: italic; color: var(--gold); }
+
+  .reservation-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--text-light);
+    margin-bottom: 60px;
+  }
+
+  .reservation-options {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .res-btn-phone {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-style: italic;
+    color: var(--gold);
+    text-decoration: none;
+    padding: 20px 48px;
+    border: 1px solid rgba(201,169,110,0.35);
+    transition: all 0.3s;
+    letter-spacing: 0.04em;
+  }
+
+  .res-btn-phone:hover {
+    background: rgba(201,169,110,0.08);
+    border-color: var(--gold);
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--dark);
+    border-top: 1px solid rgba(201,169,110,0.1);
+    padding: 60px 60px 40px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 60px;
+  }
+
+  .footer-brand .logo-emblem {
+    margin-bottom: 20px;
+    display: inline-flex;
+  }
+
+  .footer-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--text-light);
+    line-height: 1.7;
+    margin-bottom: 28px;
+  }
+
+  .footer-awards {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .footer-award {
+    font-family: 'Tenor Sans', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid rgba(201,169,110,0.3);
+    padding: 6px 12px;
+  }
+
+  .footer-col-title {
+    font-family: 'Tenor Sans', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+  }
+
+  .footer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .footer-links a {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 300;
+    color: var(--text-light);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: color 0.3s;
+  }
+
+  .footer-links a:hover { color: var(--gold); }
+
+  .footer-bottom {
+    grid-column: 1 / -1;
+    border-top: 1px solid rgba(201,169,110,0.08);
+    padding-top: 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-copy {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 300;
+    color: rgba(212,200,184,0.4);
+    letter-spacing: 0.06em;
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── RESPONSIVE ─── */
+  /* ══════════════════════════════════════
+     RESPONSIVE — mobile first à 900px
+  ══════════════════════════════════════ */
+  @media (max-width: 900px) {
+
+    /* ── NAV ── */
+    nav { padding: 18px 24px; }
+    nav.scrolled { padding: 14px 24px; }
+    .nav-links { display: none; }
+    .nav-cta { display: none; }
+    .burger { display: flex; }
+
+    /* ── HERO ── */
+    .hero-content { padding: 0 24px 80px; }
+    .hero-title { font-size: clamp(3rem, 14vw, 5rem); }
+    .hero-sub { font-size: 1rem; max-width: 100%; }
+    .hero-deco { display: none; }
+    .scroll-hint { display: none; }
+    .hero-actions { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .btn-primary { padding: 14px 32px; }
+
+    /* ── SEPARATEURS ── */
+    .sep { padding: 0 24px; }
+
+    /* ── PHILOSOPHY ── */
+    .philosophy { grid-template-columns: 1fr; padding: 72px 24px; gap: 48px; }
+    .philosophy-illus { height: 280px; }
+    .philosophy-badges { grid-template-columns: 1fr; gap: 14px; }
+    .philosophy-title { font-size: clamp(1.8rem, 7vw, 2.6rem); }
+
+    /* ── MENUS ── */
+    .menu-section { padding: 72px 24px; }
+    .menu-grid { grid-template-columns: 1fr; gap: 3px; }
+    .menu-card { padding: 36px 28px; }
+
+    /* ── GALERIE ── */
+    .galerie { padding: 0 0 72px; }
+    .galerie-header { padding: 72px 24px 48px; }
+    .galerie-row-2 { grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 24px; }
+    .galerie-row-2 .gal-card { height: 200px; }
+    .gal-card-caption { opacity: 1; transform: translateY(0); }
+
+    /* ── LOCATION ── */
+    .location { grid-template-columns: 1fr; padding: 72px 24px; gap: 48px; }
+    .location-visual { height: 300px; }
+    .map-frame { inset: 0 0 40px 0; }
+    .location-accent { width: 110px; height: 110px; right: 0; }
+    .hours-grid { grid-template-columns: 1fr; gap: 10px; }
+
+    /* ── RESERVATION ── */
+    .reservation { padding: 72px 24px; }
+    .reservation-title { font-size: clamp(2rem, 8vw, 3rem); }
+    .res-btn-phone { font-size: 1.2rem; padding: 16px 32px; }
+
+    /* ── FOOTER ── */
+    footer { grid-template-columns: 1fr; padding: 48px 24px 32px; gap: 36px; }
+    .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
+    .footer-awards { flex-wrap: wrap; gap: 10px; }
+  }
+
+  /* ── Très petit mobile (< 480px) ── */
+  @media (max-width: 480px) {
+    .hero-title { font-size: clamp(2.6rem, 16vw, 4rem); }
+    .galerie-row-2 { grid-template-columns: 1fr; }
+    .galerie-row-2 .gal-card { height: 220px; }
+    .philosophy-badges { grid-template-columns: 1fr; }
+    .hero-eyebrow { font-size: 0.6rem; }
+    .nav-logo-wrap { gap: 10px; }
+    .logo-emblem-tag { display: none; }
+    .logo-emblem-name { font-size: 1rem; }
+    .logo-emblem-square { width: 36px; height: 36px; }
+    .logo-emblem-mono { font-size: 0.85rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav id="navbar">
+  <a href="index.html" class="logo-emblem">
+    <div class="logo-emblem-square">
+      <span class="logo-emblem-mono">LS</span>
+    </div>
+    <div class="logo-emblem-text">
+      <span class="logo-emblem-name">Les Sens</span>
+      <div class="logo-emblem-sep"></div>
+      <span class="logo-emblem-tag">Restaurant · Nice</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="menu-de-la-semaine.html">Menu de la semaine</a></li>
+    <li><a href="notre-carte.html">Notre carte</a></li>
+    <li><a href="carte-des-vins.html">Carte des vins</a></li>
+    <li><a href="index.html#location">Le restaurant</a></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:16px">
+    <a href="tel:0981065700" class="nav-cta">Réserver</a>
+    <div class="burger" id="burger" onclick="openMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- MENU MOBILE -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-logo">LS</div>
+  <button class="mobile-menu-close" onclick="closeMenu()">✕</button>
+
+  <div class="mobile-menu-links">
+    <a href="menu-de-la-semaine.html" class="mobile-menu-link" onclick="closeMenu()">Menu de la semaine</a>
+    <a href="menu-du-moment.html"    class="mobile-menu-link" onclick="closeMenu()">Menu du moment</a>
+    <a href="notre-carte.html"       class="mobile-menu-link" onclick="closeMenu()">Notre carte</a>
+    <a href="carte-des-vins.html"     class="mobile-menu-link" onclick="closeMenu()">Carte des vins</a>
+  </div>
+
+  <a href="tel:0981065700" class="mobile-menu-cta" onclick="closeMenu()">09 81 06 57 00</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">Restaurant gastronomique · Nice</div>
+    <h1 class="hero-title">
+      L'art <br>de mettre
+      <em>en éveil.</em>
+    </h1>
+    <p class="hero-sub">Cuisine de saison, produits d'exception, décor urbain et industriel au cœur de Nice. Une table où chaque plat raconte quelque chose.</p>
+    <div class="hero-actions">
+      <a href="tel:0981065700" class="btn-primary"><span>Réserver une table</span></a>
+      <a href="#menus" class="btn-ghost">Découvrir les menus</a>
+    </div>
+  </div>
+
+  <!-- Decorative circle -->
+  <div class="hero-deco">
+    <div class="hero-deco-circle">
+      <svg class="hero-deco-label" viewBox="0 0 320 320">
+        <defs>
+          <path id="circle-path" d="M160,20 a140,140 0 1,1 -0.001,0"/>
+        </defs>
+        <text>
+          <textPath href="#circle-path">
+            CUISINE MAISON · PRODUITS DE SAISON · MÉDITERRANÉE · GASTRONOMIE ·
+          </textPath>
+        </text>
+      </svg>
+      <div class="hero-deco-inner">
+        <div style="font-family:'Cinzel',serif;font-size:1.8rem;font-weight:600;color:var(--gold);letter-spacing:0.06em;margin-bottom:12px">LS</div>
+        <div class="hero-deco-time">12h00 — 14h00</div>
+        <div class="hero-deco-divider"></div>
+        <div class="hero-deco-time">19h30 — 21h30</div>
+        <div class="hero-deco-divider"></div>
+        <div class="hero-deco-phone">09 81 06 57 00</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll hint -->
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- SEPARATOR -->
+<div class="sep"><div class="sep-line"></div><div class="sep-diamond"></div><div class="sep-line"></div></div>
+
+<!-- PHILOSOPHY -->
+<section class="philosophy">
+  <div class="philosophy-text reveal">
+    <div class="section-label">Notre philosophie</div>
+    <h2 class="philosophy-title">
+      Sens en éveil,<br>papilles <em>sens dessus<br>dessous.</em>
+    </h2>
+    <p class="philosophy-body">
+      Le chef vous propose une cuisine de grande qualité, ancrée dans les saisons et la région. Poissons et viandes régionales travaillés avec créativité, dans un cadre au style urbain et industriel, chaleureux et original, en plein cœur de Nice.
+    </p>
+    <div class="philosophy-badges">
+      <!-- Badge 1 : Cuisine maison -->
+      <div class="badge">
+        <div class="badge-corner-tr"></div>
+        <div class="badge-corner-bl"></div>
+        <div class="badge-top-line"></div>
+        <div class="badge-icon-wrap">
+          <svg viewBox="0 0 28 28">
+            <!-- Toque de cuisinier -->
+            <path d="M9 22 L9 16 Q6 15 6 11 Q6 7 10 7 Q10 4 14 4 Q18 4 18 7 Q22 7 22 11 Q22 15 19 16 L19 22 Z"/>
+            <line x1="9" y1="19" x2="19" y2="19"/>
+            <line x1="9" y1="22" x2="19" y2="22"/>
+          </svg>
+        </div>
+        <div class="badge-content">
+          <div class="badge-title">Cuisine</div>
+          <div class="badge-text">Maison & de saison</div>
+        </div>
+      </div>
+
+      <!-- Badge 2 : Cadre urbain -->
+      <div class="badge">
+        <div class="badge-corner-tr"></div>
+        <div class="badge-corner-bl"></div>
+        <div class="badge-top-line"></div>
+        <div class="badge-icon-wrap">
+          <svg viewBox="0 0 28 28">
+            <!-- Brique industrielle / arche -->
+            <rect x="4" y="16" width="20" height="8" rx="0"/>
+            <path d="M4 16 Q4 8 14 8 Q24 8 24 16"/>
+            <line x1="4"  y1="20" x2="24" y2="20"/>
+            <line x1="11" y1="16" x2="11" y2="24"/>
+            <line x1="17" y1="16" x2="17" y2="24"/>
+          </svg>
+        </div>
+        <div class="badge-content">
+          <div class="badge-title">Cadre</div>
+          <div class="badge-text">Urbain & industriel</div>
+        </div>
+      </div>
+
+      <!-- Badge 3 : Cave à vins -->
+      <div class="badge">
+        <div class="badge-corner-tr"></div>
+        <div class="badge-corner-bl"></div>
+        <div class="badge-top-line"></div>
+        <div class="badge-icon-wrap">
+          <svg viewBox="0 0 28 28">
+            <!-- Verre de vin -->
+            <path d="M9 4 L19 4 Q19 13 14 16 Q9 13 9 4 Z"/>
+            <line x1="14" y1="16" x2="14" y2="22"/>
+            <line x1="9"  y1="22" x2="19" y2="22"/>
+            <!-- Petite bulle -->
+            <circle cx="12" cy="9"  r="1"   fill="var(--gold)" opacity="0.5" stroke="none"/>
+            <circle cx="15" cy="11" r="0.7" fill="var(--gold)" opacity="0.4" stroke="none"/>
+          </svg>
+        </div>
+        <div class="badge-content">
+          <div class="badge-title">Cave à vins</div>
+          <div class="badge-text">Sélection soignée</div>
+        </div>
+      </div>
+
+      <!-- Badge 4 : Rapport qualité-prix -->
+      <div class="badge">
+        <div class="badge-corner-tr"></div>
+        <div class="badge-corner-bl"></div>
+        <div class="badge-top-line"></div>
+        <div class="badge-icon-wrap">
+          <svg viewBox="0 0 28 28">
+            <!-- Étoile fine -->
+            <polygon points="14,4 16.5,10.5 23,10.5 17.8,14.5 19.8,21 14,17 8.2,21 10.2,14.5 5,10.5 11.5,10.5"/>
+          </svg>
+        </div>
+        <div class="badge-content">
+          <div class="badge-title">Qualité & Prix</div>
+          <div class="badge-text">Accessible, sans compromis</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Illustration droite -->
+  <div class="philosophy-illus reveal">
+    <svg viewBox="0 0 480 560" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" style="max-height:560px">
+      <defs>
+        <radialGradient id="bgGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"   stop-color="#C9A96E" stop-opacity="0.07"/>
+          <stop offset="100%" stop-color="#0E0B08" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="stemGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stop-color="#C9A96E" stop-opacity="0.9"/>
+          <stop offset="100%" stop-color="#C9A96E" stop-opacity="0.2"/>
+        </linearGradient>
+        <linearGradient id="plateGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stop-color="#2E2820"/>
+          <stop offset="100%" stop-color="#1C1714"/>
+        </linearGradient>
+        <linearGradient id="domeGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stop-color="#3A3228" stop-opacity="0.9"/>
+          <stop offset="100%" stop-color="#1C1714" stop-opacity="0.6"/>
+        </linearGradient>
+        <filter id="softBlur">
+          <feGaussianBlur stdDeviation="2.5"/>
+        </filter>
+      </defs>
+
+      <!-- Halo de fond -->
+      <ellipse cx="240" cy="300" rx="200" ry="220" fill="url(#bgGlow)"/>
+
+      <!-- ── Cloche / Dôme ── -->
+      <!-- Ombre portée -->
+      <ellipse cx="241" cy="430" rx="112" ry="12" fill="#000" opacity="0.35" filter="url(#softBlur)"/>
+      <!-- Plateau -->
+      <ellipse cx="240" cy="422" rx="108" ry="11" fill="url(#plateGrad)" stroke="#C9A96E" stroke-width="0.8" stroke-opacity="0.5"/>
+      <ellipse cx="240" cy="418" rx="108" ry="11" fill="url(#plateGrad)" stroke="#C9A96E" stroke-width="0.6" stroke-opacity="0.3"/>
+      <!-- Dôme cloche -->
+      <path d="M140 418 Q135 340 240 295 Q345 340 340 418 Z" fill="url(#domeGrad)" stroke="#C9A96E" stroke-width="0.7" stroke-opacity="0.4"/>
+      <!-- Reflet léger sur la cloche -->
+      <path d="M165 400 Q162 355 195 325 Q210 315 220 320 Q195 348 192 395 Z" fill="#C9A96E" opacity="0.04"/>
+      <!-- Anneau sommet -->
+      <circle cx="240" cy="295" r="8" fill="#2E2820" stroke="#C9A96E" stroke-width="1"/>
+      <circle cx="240" cy="295" r="3.5" fill="#C9A96E" opacity="0.8"/>
+
+      <!-- ── Herbes & brins qui dépassent ── -->
+      <!-- Brin gauche long -->
+      <path d="M200 415 C196 390 182 360 170 310 C165 285 168 265 175 250" fill="none" stroke="#C9A96E" stroke-width="0.9" stroke-opacity="0.6" stroke-linecap="round"/>
+      <!-- Petite feuille brin gauche -->
+      <path d="M173 278 C165 268 158 272 162 282 C166 292 174 286 173 278Z" fill="#C9A96E" opacity="0.35"/>
+      <path d="M173 300 C180 288 188 290 185 300 C182 310 174 306 173 300Z" fill="#C9A96E" opacity="0.25"/>
+
+      <!-- Brin central haut -->
+      <path d="M240 415 C240 388 237 355 240 300 C242 265 244 245 242 220" fill="none" stroke="#C9A96E" stroke-width="1" stroke-opacity="0.7" stroke-linecap="round"/>
+      <!-- Petite fleur au sommet -->
+      <circle cx="242" cy="216" r="3" fill="#C9A96E" opacity="0.7"/>
+      <circle cx="237" cy="211" r="2" fill="#C9A96E" opacity="0.4"/>
+      <circle cx="247" cy="210" r="2" fill="#C9A96E" opacity="0.4"/>
+      <circle cx="242" cy="207" r="1.5" fill="#C9A96E" opacity="0.3"/>
+
+      <!-- Brin droit -->
+      <path d="M278 415 C280 388 290 355 298 308 C304 278 302 258 296 242" fill="none" stroke="#C9A96E" stroke-width="0.9" stroke-opacity="0.55" stroke-linecap="round"/>
+      <path d="M297 268 C305 257 312 262 308 272 C304 282 297 276 297 268Z" fill="#C9A96E" opacity="0.3"/>
+
+      <!-- Brin court gauche -->
+      <path d="M215 416 C212 400 205 378 200 355 C196 338 196 325 200 314" fill="none" stroke="#C9A96E" stroke-width="0.7" stroke-opacity="0.45" stroke-linecap="round"/>
+
+      <!-- ── Cercles décoratifs concentriques ── -->
+      <circle cx="240" cy="300" r="170" fill="none" stroke="#C9A96E" stroke-width="0.4" stroke-opacity="0.12"/>
+      <circle cx="240" cy="300" r="148" fill="none" stroke="#C9A96E" stroke-width="0.3" stroke-opacity="0.08"/>
+
+      <!-- ── Cadre octogonal ── -->
+      <polygon points="240,58 336,92 380,188 380,332 336,428 240,462 144,428 100,332 100,188 144,92"
+        fill="none" stroke="#C9A96E" stroke-width="0.6" stroke-opacity="0.18"/>
+      <polygon points="240,72 328,103 368,193 368,327 328,418 240,448 152,418 112,327 112,193 152,103"
+        fill="none" stroke="#C9A96E" stroke-width="0.3" stroke-opacity="0.1"/>
+
+      <!-- ── Petits ornements aux coins ── -->
+      <!-- Haut gauche -->
+      <line x1="108" y1="116" x2="126" y2="116" stroke="#C9A96E" stroke-width="0.6" stroke-opacity="0.3"/>
+      <line x1="117" y1="108" x2="117" y2="126" stroke="#C9A96E" stroke-width="0.6" stroke-opacity="0.3"/>
+      <circle cx="117" cy="117" r="2" fill="none" stroke="#C9A96E" stroke-width="0.5" stroke-opacity="0.3"/>
+      <!-- Haut droit -->
+      <line x1="354" y1="116" x2="372" y2="116" stroke="#C9A96E" stroke-width="0.6" stroke-opacity="0.3"/>
+      <line x1="363" y1="108" x2="363" y2="126" stroke="#C9A96E" stroke-width="0.6" stroke-opacity="0.3"/>
+      <circle cx="363" cy="117" r="2" fill="none" stroke="#C9A96E" stroke-width="0.5" stroke-opacity="0.3"/>
+      <!-- Bas gauche -->
+      <line x1="108" y1="404" x2="126" y2="404" stroke="#C9A96E" stroke-width="0.6" stroke-opacity="0.3"/>
+      <line x1="117" y1="396" x2="117" y2="412" stroke="#C9A96E" stroke-width="0.6" stroke-opacity="0.3"/>
+      <circle cx="117" cy="404" r="2" fill="none" stroke="#C9A96E" stroke-width="0.5" stroke-opacity="0.3"/>
+      <!-- Bas droit -->
+      <line x1="354" y1="404" x2="372" y2="404" stroke="#C9A96E" stroke-width="0.6" stroke-opacity="0.3"/>
+      <line x1="363" y1="396" x2="363" y2="412" stroke="#C9A96E" stroke-width="0.6" stroke-opacity="0.3"/>
+      <circle cx="363" cy="404" r="2" fill="none" stroke="#C9A96E" stroke-width="0.5" stroke-opacity="0.3"/>
+
+      <!-- ── Texte gravé ── -->
+      <text x="240" y="492" text-anchor="middle"
+        font-family="'Tenor Sans', sans-serif"
+        font-size="7" letter-spacing="5"
+        fill="#C9A96E" fill-opacity="0.4">RESTAURANT · NICE · DEPUIS 2015</text>
+
+      <!-- Ligne déco sous texte -->
+      <line x1="170" y1="496" x2="208" y2="496" stroke="#C9A96E" stroke-width="0.4" stroke-opacity="0.2"/>
+      <rect x="237" y="494" width="6" height="6" transform="rotate(45 240 497)" fill="#C9A96E" fill-opacity="0.25"/>
+      <line x1="272" y1="496" x2="310" y2="496" stroke="#C9A96E" stroke-width="0.4" stroke-opacity="0.2"/>
+    </svg>
+  </div>
+
+</section>
+
+<!-- SEPARATOR -->
+<div class="sep"><div class="sep-line"></div><div class="sep-diamond"></div><div class="sep-line"></div></div>
+
+<!-- MENUS -->
+<section class="menu-section" id="menus">
+  <div class="menu-header reveal">
+    <div class="section-label" style="justify-content:center">Nos propositions</div>
+    <h2 class="menu-title">Une table <em>vivante,</em><br>qui change avec les saisons.</h2>
+    <p class="menu-sub">Menu du marché, formules déjeuner et carte du moment — toujours frais, toujours juste.</p>
+  </div>
+
+  <div class="menu-grid">
+    <a href="menu-de-la-semaine.html" class="menu-card reveal" style="transition-delay:0.1s">
+      <div class="menu-card-arrow">→</div>
+      <div class="menu-card-number">01</div>
+      <div class="menu-card-title">Menu de la semaine</div>
+      <p class="menu-card-desc">Formule déjeuner renouvelée chaque semaine, selon les arrivages et l'inspiration du chef. Rapport qualité-prix irréprochable.</p>
+      <div class="menu-card-price">Voir le menu</div>
+    </a>
+
+    <a href="menu-du-moment.html" class="menu-card reveal" style="transition-delay:0.2s">
+      <div class="menu-card-arrow">→</div>
+      <div class="menu-card-number">02</div>
+      <div class="menu-card-title">Menu du moment</div>
+      <p class="menu-card-desc">Le menu gastronomique de saison, révélant toute la créativité de la cuisine. Poissons et viandes régionales travaillés avec finesse.</p>
+      <div class="menu-card-price">Voir le menu</div>
+    </a>
+
+    <a href="notre-carte.html" class="menu-card reveal" style="transition-delay:0.3s">
+      <div class="menu-card-arrow">→</div>
+      <div class="menu-card-number">03</div>
+      <div class="menu-card-title">Notre carte</div>
+      <p class="menu-card-desc">La carte complète du restaurant, avec entrées, plats, desserts et une sélection de vins pour accompagner chaque moment.</p>
+      <div class="menu-card-price">Voir la carte</div>
+    </a>
+  </div>
+
+  <div class="menu-cta-wrap reveal">
+    <a href="carte-des-vins.html" class="btn-ghost" style="justify-content:center">Explorer la carte des vins</a>
+  </div>
+</section>
+
+<!-- GALERIE -->
+<section class="galerie">
+  <div class="galerie-header reveal">
+    <div class="section-label" style="justify-content:center">L'atmosphère</div>
+    <h2 class="galerie-title">Un lieu <em>qui parle</em> avant même<br>que le chef ne cuisine.</h2>
+    <p class="galerie-sub">Décor urbain & industriel, terrasse en centre-ville, lumières tamisées.</p>
+  </div>
+
+  <!-- Ligne 4 photos -->
+  <div class="galerie-row-2 reveal">
+
+    <div class="gal-card">
+      <div class="gal-card-photo gp4"></div>
+      <div class="gal-card-overlay"></div>
+      <div class="gal-card-caption">
+        <div class="gal-card-caption-line"></div>
+        <div class="gal-card-caption-text">Décor urbain</div>
+      </div>
+    </div>
+
+    <div class="gal-card">
+      <div class="gal-card-photo gp5"></div>
+      <div class="gal-card-overlay"></div>
+      <div class="gal-card-caption">
+        <div class="gal-card-caption-line"></div>
+        <div class="gal-card-caption-text">La terrasse</div>
+      </div>
+    </div>
+
+    <div class="gal-card">
+      <div class="gal-card-photo gp6"></div>
+      <div class="gal-card-overlay"></div>
+      <div class="gal-card-caption">
+        <div class="gal-card-caption-line"></div>
+        <div class="gal-card-caption-text">Saveurs du marché</div>
+      </div>
+    </div>
+
+    <div class="gal-card">
+      <div class="gal-card-photo gp7"></div>
+      <div class="gal-card-overlay"></div>
+      <div class="gal-card-caption">
+        <div class="gal-card-caption-line"></div>
+        <div class="gal-card-caption-text">En cuisine</div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- SEPARATOR -->
+<div class="sep"><div class="sep-line"></div><div class="sep-diamond"></div><div class="sep-line"></div></div>
+
+<!-- LOCATION -->
+<section class="location" id="location">
+  <div class="location-visual reveal">
+    <div class="map-frame">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2883.4!2d7.2702399!3d43.7003337!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12cddaa686ad9d31%3A0xda9d249b81e6b34a!2sLes%20Sens!5e0!3m2!1sfr!2sfr!4v1700000000000!5m2!1sfr!2sfr"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Les Sens - 37 Rue Pastorelli, Nice">
+      </iframe>
+    </div>
+    <div class="location-accent">
+      <div class="location-accent-text">Centre-ville<br>de Nice</div>
+    </div>
+  </div>
+
+  <div class="location-info reveal">
+    <div class="section-label">Nous trouver</div>
+    <h2 class="location-title">Au cœur de<br><em>Nice,</em> rue Pastorelli.</h2>
+
+    <div class="location-details">
+      <div class="loc-detail">
+        <div class="loc-detail-icon">📍</div>
+        <div class="loc-detail-content">
+          <div class="loc-detail-label">Adresse</div>
+          <div class="loc-detail-value">37 Rue Pastorelli, 06000 Nice</div>
+        </div>
+      </div>
+      <div class="loc-detail">
+        <div class="loc-detail-icon">📞</div>
+        <div class="loc-detail-content">
+          <div class="loc-detail-label">Téléphone</div>
+          <div class="loc-detail-value"><a href="tel:0981065700" style="color:inherit;text-decoration:none">09 81 06 57 00</a></div>
+        </div>
+      </div>
+      <div class="loc-detail">
+        <div class="loc-detail-icon">🕐</div>
+        <div class="loc-detail-content">
+          <div class="loc-detail-label">Horaires d'ouverture</div>
+          <div class="loc-detail-value">
+            <div class="hours-grid">
+              <div class="hour-item"><span class="day">Lundi</span><span>12h–14h · 19h30–21h30</span></div>
+              <div class="hour-item"><span class="day">Mardi</span><span>12h–14h · 19h30–21h30</span></div>
+              <div class="hour-item"><span class="day">Mercredi</span><span>12h–14h · 19h30–21h30</span></div>
+              <div class="hour-item"><span class="day">Jeudi</span><span>12h–14h · 19h30–21h30</span></div>
+              <div class="hour-item"><span class="day">Vendredi</span><span>12h–14h · 19h30–21h30</span></div>
+              <div class="hour-item hour-closed"><span class="day">Samedi</span><span>Fermé</span></div>
+              <div class="hour-item hour-closed"><span class="day">Dimanche</span><span>Fermé</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="loc-detail">
+        <div class="loc-detail-icon">ℹ</div>
+        <div class="loc-detail-content">
+          <div class="loc-detail-label">Informations pratiques</div>
+          <div class="loc-detail-value" style="font-size:0.9rem;color:var(--text-light);font-family:'Montserrat',sans-serif;font-weight:300">Réservation obligatoire · Salle privée disponible</div>
+        </div>
+      </div>
+    </div>
+
+    <a href="https://www.google.com/maps/place/Les+Sens/@43.7003337,7.2702399,17z" target="_blank" class="btn-ghost">Voir sur Google Maps</a>
+  </div>
+</section>
+
+<!-- SEPARATOR -->
+<div class="sep"><div class="sep-line"></div><div class="sep-diamond"></div><div class="sep-line"></div></div>
+
+<!-- RESERVATION CTA -->
+<section class="reservation">
+  <div class="reservation-eyebrow">Prendre place à notre table</div>
+  <h2 class="reservation-title">Réservez votre<br><em>expérience.</em></h2>
+  <p class="reservation-sub">La réservation est obligatoire. Nous vous attendons du lundi au vendredi.</p>
+  <div class="reservation-options">
+    <a href="tel:0981065700" class="res-btn-phone">09 81 06 57 00</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <a href="index.html" class="logo-emblem sm">
+      <div class="logo-emblem-square">
+        <span class="logo-emblem-mono">LS</span>
+      </div>
+      <div class="logo-emblem-text">
+        <span class="logo-emblem-name">Les Sens</span>
+        <div class="logo-emblem-sep"></div>
+        <span class="logo-emblem-tag">Restaurant · Nice</span>
+      </div>
+    </a>
+    <p class="footer-tagline">Cuisine de saison, produits d'exception,<br>au cœur de Nice depuis des années.</p>
+    <div class="footer-awards">
+      <div class="footer-award">Gault & Millau</div>
+      <div class="footer-award">Petit Futé</div>
+      <div class="footer-award">Fait Maison</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="footer-col-title">Navigation</div>
+    <ul class="footer-links">
+      <li><a href="menu-de-la-semaine.html">Menu de la semaine</a></li>
+      <li><a href="menu-du-moment.html">Menu du moment</a></li>
+      <li><a href="notre-carte.html">Notre carte</a></li>
+      <li><a href="carte-des-vins.html">Carte des vins</a></li>
+    </ul>
+  </div>
+
+  <div>
+    <div class="footer-col-title">Contact</div>
+    <ul class="footer-links">
+      <li><a href="tel:0981065700">09 81 06 57 00</a></li>
+      <li><a href="https://www.google.com/maps/place/Les+Sens/@43.7003337,7.2702399,17z" target="_blank">37 Rue Pastorelli, Nice</a></li>
+      <li><a href="#">Mentions légales</a></li>
+    </ul>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 Les Sens — Restaurant Nice. Tous droits réservés.</div>
+    <div class="footer-copy">Réservation obligatoire · 09 81 06 57 00</div>
+  </div>
+</footer>
+
+<script>
+  // Navbar scroll behavior
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 80);
+  });
+
+  function openMenu() {
+    document.getElementById('mobileMenu').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMenu() {
+    document.getElementById('mobileMenu').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
