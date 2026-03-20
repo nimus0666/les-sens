@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carte des Vins — Les Sens · Nice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Tenor+Sans&family=Montserrat:wght@300;400;500&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{--cream:#F5EFE4;--dark:#0E0B08;--charcoal:#1C1714;--stone:#2E2820;--gold:#C9A96E;--gold-light:#E2C98A;--text-light:#D4C8B8;}
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--dark);color:var(--cream);font-family:'Montserrat',sans-serif;font-weight:300;overflow-x:hidden;}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:0.4;}
+
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:28px 60px;display:flex;align-items:center;justify-content:space-between;transition:background 0.5s,padding 0.4s;}
+  nav.scrolled{background:rgba(14,11,8,0.92);backdrop-filter:blur(12px);padding:16px 60px;border-bottom:1px solid rgba(201,169,110,0.15);}
+  .logo-emblem{display:flex;align-items:center;gap:14px;text-decoration:none;flex-shrink:0;}
+  .logo-emblem-square{position:relative;width:46px;height:46px;border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .logo-emblem-square::before{content:'';position:absolute;inset:4px;border:1px solid rgba(201,169,110,0.25);}
+  .logo-emblem-square::after{content:'';position:absolute;inset:-3px;background:linear-gradient(var(--gold),var(--gold)) top left/8px 2px no-repeat,linear-gradient(var(--gold),var(--gold)) top left/2px 8px no-repeat,linear-gradient(var(--gold),var(--gold)) top right/8px 2px no-repeat,linear-gradient(var(--gold),var(--gold)) top right/2px 8px no-repeat,linear-gradient(var(--gold),var(--gold)) bottom left/8px 2px no-repeat,linear-gradient(var(--gold),var(--gold)) bottom left/2px 8px no-repeat,linear-gradient(var(--gold),var(--gold)) bottom right/8px 2px no-repeat,linear-gradient(var(--gold),var(--gold)) bottom right/2px 8px no-repeat;}
+  .logo-emblem-mono{font-family:'Cinzel',serif;font-size:1.05rem;font-weight:600;color:var(--gold);position:relative;z-index:1;line-height:1;}
+  .logo-emblem-text{display:flex;flex-direction:column;}
+  .logo-emblem-name{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:300;letter-spacing:0.22em;color:var(--cream);text-transform:uppercase;line-height:1;}
+  .logo-emblem-sep{height:1px;background:linear-gradient(to right,rgba(201,169,110,0.5),transparent);margin:5px 0 4px;}
+  .logo-emblem-tag{font-family:'Tenor Sans',sans-serif;font-size:0.42rem;letter-spacing:0.45em;text-transform:uppercase;color:rgba(201,169,110,0.55);}
+  .nav-links{display:flex;gap:36px;list-style:none;}
+  .nav-links a{font-family:'Tenor Sans',sans-serif;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-light);text-decoration:none;transition:color 0.3s;position:relative;}
+  .nav-links a.active,.nav-links a:hover{color:var(--gold);}
+  .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--gold);transform:scaleX(0);transition:transform 0.3s;transform-origin:left;}
+  .nav-links a.active::after,.nav-links a:hover::after{transform:scaleX(1);}
+  .nav-cta{font-family:'Tenor Sans',sans-serif;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--dark);background:var(--gold);padding:10px 24px;text-decoration:none;transition:background 0.3s;}
+  .nav-cta:hover{background:var(--gold-light);}
+  .burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;}
+  .burger span{display:block;width:24px;height:1.5px;background:var(--gold);}
+  .mobile-menu{display:none;position:fixed;inset:0;background:rgba(14,11,8,0.98);backdrop-filter:blur(16px);z-index:300;flex-direction:column;align-items:center;justify-content:center;}
+  .mobile-menu.open{display:flex;}
+  .mobile-menu-logo{position:absolute;top:28px;left:28px;font-family:'Cinzel',serif;font-size:1.1rem;font-weight:600;color:var(--gold);letter-spacing:0.08em;}
+  .mobile-menu-close{position:absolute;top:28px;right:28px;width:40px;height:40px;background:none;border:1px solid rgba(201,169,110,0.3);color:var(--gold);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;}
+  .mobile-menu-links{display:flex;flex-direction:column;align-items:center;width:100%;}
+  .mobile-menu-link{font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,7vw,2.4rem);font-weight:300;letter-spacing:0.1em;color:var(--cream);text-decoration:none;padding:18px 40px;width:100%;text-align:center;border-bottom:1px solid rgba(201,169,110,0.07);transition:color 0.3s,background 0.3s;}
+  .mobile-menu-link:first-child{border-top:1px solid rgba(201,169,110,0.07);}
+  .mobile-menu-link:hover{color:var(--gold);background:rgba(201,169,110,0.04);}
+  .mobile-menu-cta{margin-top:36px;font-family:'Tenor Sans',sans-serif;font-size:0.72rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--dark);background:var(--gold);padding:14px 40px;text-decoration:none;}
+
+  /* HERO */
+  .page-hero{min-height:42vh;display:flex;align-items:flex-end;padding:0 60px 64px;padding-top:110px;position:relative;overflow:hidden;}
+  .page-hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 30% 70%,rgba(160,60,60,0.1) 0%,transparent 50%),radial-gradient(ellipse at 80% 30%,rgba(201,169,110,0.07) 0%,transparent 50%),linear-gradient(160deg,#0E0B08 0%,#1C1714 60%,#141008 100%);}
+  .page-hero-content{position:relative;z-index:2;}
+  .page-hero-eyebrow{font-family:'Tenor Sans',sans-serif;font-size:0.68rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:flex;align-items:center;gap:14px;}
+  .page-hero-eyebrow::before{content:'';width:36px;height:1px;background:var(--gold);}
+  .page-hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,7vw,6.5rem);font-weight:300;line-height:0.95;color:var(--cream);}
+  .page-hero-title em{font-style:italic;color:var(--gold);display:block;}
+
+  /* NAV VINS */
+  .vins-nav{position:sticky;top:0;z-index:90;background:var(--charcoal);border-bottom:1px solid rgba(201,169,110,0.12);padding:0 60px;display:flex;gap:0;overflow-x:auto;}
+  .vins-nav-link{font-family:'Tenor Sans',sans-serif;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(212,200,184,0.5);text-decoration:none;padding:20px 28px;border-bottom:2px solid transparent;white-space:nowrap;transition:color 0.3s,border-color 0.3s;}
+  .vins-nav-link:hover,.vins-nav-link.active{color:var(--gold);border-bottom-color:var(--gold);}
+
+  /* Indicateurs couleur vin */
+  .vin-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px;vertical-align:middle;}
+  .dot-rose{background:#D4607A;}
+  .dot-blanc{background:#E8D5A0;}
+  .dot-rouge{background:#8B2635;}
+  .dot-champ{background:#F0C040;}
+  .dot-verre{background:rgba(201,169,110,0.5);border:1px solid var(--gold);}
+
+  /* BODY */
+  .vins-body{max-width:1000px;margin:0 auto;padding:80px 60px 120px;}
+
+  .vins-section{margin-bottom:80px;scroll-margin-top:120px;}
+  .vins-section-header{display:flex;align-items:center;gap:24px;margin-bottom:40px;}
+  .vins-section-color{width:4px;height:48px;flex-shrink:0;border-radius:2px;}
+  .color-rose{background:linear-gradient(to bottom,#E87E9A,#C4506A);}
+  .color-blanc{background:linear-gradient(to bottom,#F0E0B0,#C8B870);}
+  .color-rouge{background:linear-gradient(to bottom,#A03040,#601828);}
+  .color-champ{background:linear-gradient(to bottom,#F8D860,#C09030);}
+  .color-verre{background:linear-gradient(to bottom,var(--gold-light),var(--gold));}
+  .vins-section-title{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;font-style:italic;color:var(--gold);}
+  .vins-section-line{flex:1;height:1px;background:linear-gradient(to right,rgba(201,169,110,0.2),transparent);}
+
+  /* En-têtes colonnes */
+  .vins-table-header{display:grid;grid-template-columns:1fr auto auto;gap:20px;padding:0 0 10px;margin-bottom:4px;border-bottom:1px solid rgba(201,169,110,0.15);}
+  .vins-th{font-family:'Tenor Sans',sans-serif;font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(201,169,110,0.4);}
+  .vins-th-right{text-align:right;}
+
+  /* Vin */
+  .vin-item{display:grid;grid-template-columns:1fr auto auto;gap:20px;align-items:baseline;padding:18px 0;border-bottom:1px solid rgba(201,169,110,0.06);transition:padding-left 0.3s;cursor:default;position:relative;}
+  .vin-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--gold);transform:scaleY(0);transition:transform 0.35s;transform-origin:bottom;}
+  .vin-item:hover{padding-left:14px;}
+  .vin-item:hover::before{transform:scaleY(1);}
+  .vin-item:first-of-type{border-top:1px solid rgba(201,169,110,0.06);}
+  .vin-name{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400;color:var(--cream);margin-bottom:3px;transition:color 0.3s;}
+  .vin-item:hover .vin-name{color:var(--gold-light);}
+  .vin-region{font-family:'Cormorant Garamond',serif;font-size:0.85rem;font-style:italic;color:rgba(212,200,184,0.45);}
+  .vin-price-btl{font-family:'Cinzel',serif;font-size:0.9rem;color:var(--gold);white-space:nowrap;text-align:right;}
+  .vin-price-verre{font-family:'Cinzel',serif;font-size:0.75rem;color:rgba(201,169,110,0.5);white-space:nowrap;text-align:right;}
+
+  .sep{display:flex;align-items:center;gap:20px;padding:0 60px;}
+  .sep-line{flex:1;height:1px;background:rgba(201,169,110,0.12);}
+  .sep-diamond{width:5px;height:5px;background:var(--gold);transform:rotate(45deg);flex-shrink:0;}
+  footer{background:var(--charcoal);border-top:1px solid rgba(201,169,110,0.1);padding:52px 60px 36px;display:grid;grid-template-columns:2fr 1fr 1fr;gap:60px;}
+  .footer-tagline{font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;color:var(--text-light);line-height:1.7;margin-bottom:24px;}
+  .footer-awards{display:flex;gap:12px;flex-wrap:wrap;}
+  .footer-award{font-family:'Tenor Sans',sans-serif;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,169,110,0.3);padding:5px 10px;}
+  .footer-col-title{font-family:'Tenor Sans',sans-serif;font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;}
+  .footer-links{list-style:none;display:flex;flex-direction:column;gap:12px;}
+  .footer-links a{font-family:'Montserrat',sans-serif;font-size:0.72rem;font-weight:300;color:var(--text-light);text-decoration:none;letter-spacing:0.04em;transition:color 0.3s;}
+  .footer-links a:hover{color:var(--gold);}
+  .footer-bottom{grid-column:1/-1;border-top:1px solid rgba(201,169,110,0.08);padding-top:24px;display:flex;justify-content:space-between;align-items:center;}
+  .footer-copy{font-family:'Montserrat',sans-serif;font-size:0.65rem;font-weight:300;color:rgba(212,200,184,0.35);letter-spacing:0.06em;}
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity 0.8s ease,transform 0.8s ease;}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+
+  @media(max-width:900px){
+    nav{padding:18px 24px;}nav.scrolled{padding:14px 24px;}
+    .nav-links,.nav-cta{display:none;}.burger{display:flex;}
+    .page-hero{padding:0 24px 48px;min-height:35vh;}
+    .vins-nav{padding:0 24px;}
+    .vins-body{padding:60px 24px 80px;}
+    .vins-table-header{grid-template-columns:1fr auto;}
+    .vins-th:last-child{display:none;}
+    .vin-item{grid-template-columns:1fr auto;}
+    .vin-price-verre{display:none;}
+    .sep{padding:0 24px;}
+    footer{grid-template-columns:1fr;padding:40px 24px 28px;gap:32px;}
+    .footer-bottom{flex-direction:column;gap:10px;text-align:center;}
+  }
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="index.html" class="logo-emblem">
+    <div class="logo-emblem-square"><span class="logo-emblem-mono">LS</span></div>
+    <div class="logo-emblem-text">
+      <span class="logo-emblem-name">Les Sens</span>
+      <div class="logo-emblem-sep"></div>
+      <span class="logo-emblem-tag">Restaurant · Nice</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="menu-de-la-semaine.html">Menu de la semaine</a></li>
+    <li><a href="menu-du-moment.html">Menu du moment</a></li>
+    <li><a href="notre-carte.html">Notre carte</a></li>
+    <li><a href="carte-des-vins.html" class="active">Carte des vins</a></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:16px">
+    <a href="tel:0981065700" class="nav-cta">Réserver</a>
+    <div class="burger" onclick="openMenu()"><span></span><span></span><span></span></div>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-logo">LS</div>
+  <button class="mobile-menu-close" onclick="closeMenu()">✕</button>
+  <div class="mobile-menu-links">
+    <a href="menu-de-la-semaine.html" class="mobile-menu-link" onclick="closeMenu()">Menu de la semaine</a>
+    <a href="menu-du-moment.html"     class="mobile-menu-link" onclick="closeMenu()">Menu du moment</a>
+    <a href="notre-carte.html"        class="mobile-menu-link" onclick="closeMenu()">Notre carte</a>
+    <a href="carte-des-vins.html"     class="mobile-menu-link" onclick="closeMenu()">Carte des vins</a>
+  </div>
+  <a href="tel:0981065700" class="mobile-menu-cta" onclick="closeMenu()">09 81 06 57 00</a>
+</div>
+
+<section class="page-hero">
+  <div class="page-hero-bg"></div>
+  <div class="page-hero-content reveal">
+    <div class="page-hero-eyebrow">Cave sélectionnée</div>
+    <h1 class="page-hero-title">Carte des <em>vins.</em></h1>
+  </div>
+</section>
+
+<nav class="vins-nav">
+  <a href="#roses"     class="vins-nav-link active"><span class="vin-dot dot-rose"></span>Rosés</a>
+  <a href="#blancs"    class="vins-nav-link"><span class="vin-dot dot-blanc"></span>Blancs</a>
+  <a href="#rouges"    class="vins-nav-link"><span class="vin-dot dot-rouge"></span>Rouges</a>
+  <a href="#champagne" class="vins-nav-link"><span class="vin-dot dot-champ"></span>Champagnes</a>
+  <a href="#verre"     class="vins-nav-link"><span class="vin-dot dot-verre"></span>Au verre</a>
+</nav>
+
+<div class="vins-body">
+
+  <!-- ROSÉS -->
+  <div class="vins-section reveal" id="roses">
+    <div class="vins-section-header">
+      <div class="vins-section-color color-rose"></div>
+      <span class="vins-section-title">Vins Rosés</span>
+      <div class="vins-section-line"></div>
+    </div>
+    <div class="vins-table-header">
+      <span class="vins-th">Appellation</span>
+      <span class="vins-th vins-th-right">Bouteille</span>
+      <span class="vins-th vins-th-right">Verre</span>
+    </div>
+    <div class="vin-item"><div><div class="vin-name">Château Minuty — Prestige</div><div class="vin-region">Côtes de Provence</div></div><div class="vin-price-btl">42€</div><div class="vin-price-verre">11€</div></div>
+    <div class="vin-item"><div><div class="vin-name">Miraval — Studio Rosé</div><div class="vin-region">Côtes de Provence</div></div><div class="vin-price-btl">38€</div><div class="vin-price-verre">10€</div></div>
+    <div class="vin-item"><div><div class="vin-name">Domaine Tempier — Bandol Rosé</div><div class="vin-region">Bandol</div></div><div class="vin-price-btl">52€</div><div class="vin-price-verre">14€</div></div>
+    <div class="vin-item"><div><div class="vin-name">Whispering Angel — Caves d'Esclans</div><div class="vin-region">Côtes de Provence</div></div><div class="vin-price-btl">48€</div><div class="vin-price-verre">13€</div></div>
+  </div>
+
+  <!-- BLANCS -->
+  <div class="vins-section reveal" id="blancs">
+    <div class="vins-section-header">
+      <div class="vins-section-color color-blanc"></div>
+      <span class="vins-section-title">Vins Blancs</span>
+      <div class="vins-section-line"></div>
+    </div>
+    <div class="vins-table-header">
+      <span class="vins-th">Appellation</span>
+      <span class="vins-th vins-th-right">Bouteille</span>
+      <span class="vins-th vins-th-right">Verre</span>
+    </div>
+    <div class="vin-item"><div><div class="vin-name">Pouilly-Fumé — Dagueneau Silex</div><div class="vin-region">Loire</div></div><div class="vin-price-btl">72€</div><div class="vin-price-verre">—</div></div>
+    <div class="vin-item"><div><div class="vin-name">Chablis 1er Cru — Montée de Tonnerre</div><div class="vin-region">Bourgogne</div></div><div class="vin-price-btl">58€</div><div class="vin-price-verre">15€</div></div>
+    <div class="vin-item"><div><div class="vin-name">Meursault — Louis Jadot</div><div class="vin-region">Bourgogne</div></div><div class="vin-price-btl">68€</div><div class="vin-price-verre">—</div></div>
+    <div class="vin-item"><div><div class="vin-name">Sancerre Blanc — Henri Bourgeois</div><div class="vin-region">Loire</div></div><div class="vin-price-btl">44€</div><div class="vin-price-verre">12€</div></div>
+    <div class="vin-item"><div><div class="vin-name">Viognier — Condrieu, Guigal</div><div class="vin-region">Rhône</div></div><div class="vin-price-btl">62€</div><div class="vin-price-verre">16€</div></div>
+  </div>
+
+  <!-- ROUGES -->
+  <div class="vins-section reveal" id="rouges">
+    <div class="vins-section-header">
+      <div class="vins-section-color color-rouge"></div>
+      <span class="vins-section-title">Vins Rouges</span>
+      <div class="vins-section-line"></div>
+    </div>
+    <div class="vins-table-header">
+      <span class="vins-th">Appellation</span>
+      <span class="vins-th vins-th-right">Bouteille</span>
+      <span class="vins-th vins-th-right">Verre</span>
+    </div>
+    <div class="vin-item"><div><div class="vin-name">Saint-Émilion Grand Cru — Château Canon</div><div class="vin-region">Bordeaux</div></div><div class="vin-price-btl">85€</div><div class="vin-price-verre">—</div></div>
+    <div class="vin-item"><div><div class="vin-name">Gevrey-Chambertin — Rossignol-Trapet</div><div class="vin-region">Bourgogne</div></div><div class="vin-price-btl">92€</div><div class="vin-price-verre">—</div></div>
+    <div class="vin-item"><div><div class="vin-name">Châteauneuf-du-Pape — Château Rayas</div><div class="vin-region">Rhône</div></div><div class="vin-price-btl">78€</div><div class="vin-price-verre">—</div></div>
+    <div class="vin-item"><div><div class="vin-name">Bandol Rouge — Domaine Tempier</div><div class="vin-region">Bandol</div></div><div class="vin-price-btl">56€</div><div class="vin-price-verre">15€</div></div>
+    <div class="vin-item"><div><div class="vin-name">Côtes du Rhône — Château de Beaucastel</div><div class="vin-region">Rhône</div></div><div class="vin-price-btl">42€</div><div class="vin-price-verre">11€</div></div>
+  </div>
+
+  <!-- CHAMPAGNES -->
+  <div class="vins-section reveal" id="champagne">
+    <div class="vins-section-header">
+      <div class="vins-section-color color-champ"></div>
+      <span class="vins-section-title">Champagnes & Bulles</span>
+      <div class="vins-section-line"></div>
+    </div>
+    <div class="vins-table-header">
+      <span class="vins-th">Cuvée</span>
+      <span class="vins-th vins-th-right">Bouteille</span>
+      <span class="vins-th vins-th-right">Coupe</span>
+    </div>
+    <div class="vin-item"><div><div class="vin-name">Ruinart — Blanc de Blancs</div><div class="vin-region">Champagne</div></div><div class="vin-price-btl">98€</div><div class="vin-price-verre">18€</div></div>
+    <div class="vin-item"><div><div class="vin-name">Billecart-Salmon — Brut Rosé</div><div class="vin-region">Champagne</div></div><div class="vin-price-btl">110€</div><div class="vin-price-verre">22€</div></div>
+    <div class="vin-item"><div><div class="vin-name">Laurent-Perrier — Cuvée Brut</div><div class="vin-region">Champagne</div></div><div class="vin-price-btl">82€</div><div class="vin-price-verre">16€</div></div>
+    <div class="vin-item"><div><div class="vin-name">Krug — Grande Cuvée</div><div class="vin-region">Champagne</div></div><div class="vin-price-btl">195€</div><div class="vin-price-verre">—</div></div>
+    <div class="vin-item"><div><div class="vin-name">Crémant de Bourgogne — Louis Bouillot</div><div class="vin-region">Bourgogne</div></div><div class="vin-price-btl">36€</div><div class="vin-price-verre">9€</div></div>
+  </div>
+
+  <!-- AU VERRE -->
+  <div class="vins-section reveal" id="verre">
+    <div class="vins-section-header">
+      <div class="vins-section-color color-verre"></div>
+      <span class="vins-section-title">Vins au Verre</span>
+      <div class="vins-section-line"></div>
+    </div>
+    <div class="vins-table-header">
+      <span class="vins-th">Sélection du moment</span>
+      <span class="vins-th vins-th-right">12cl</span>
+      <span class="vins-th vins-th-right">Accord</span>
+    </div>
+    <div class="vin-item"><div><div class="vin-name">Rosé de Provence — Minuty</div><div class="vin-region">Fruits de mer · Entrées légères</div></div><div class="vin-price-btl">10€</div><div class="vin-price-verre">Poissons</div></div>
+    <div class="vin-item"><div><div class="vin-name">Chablis 1er Cru</div><div class="vin-region">Turbot · Saint-Jacques · Huîtres</div></div><div class="vin-price-btl">14€</div><div class="vin-price-verre">Fruits de mer</div></div>
+    <div class="vin-item"><div><div class="vin-name">Sancerre Blanc</div><div class="vin-region">Chèvre · Asperges · Carpaccio</div></div><div class="vin-price-btl">12€</div><div class="vin-price-verre">Entrées</div></div>
+    <div class="vin-item"><div><div class="vin-name">Bandol Rouge — Tempier</div><div class="vin-region">Agneau · Viandes en sauce</div></div><div class="vin-price-btl">14€</div><div class="vin-price-verre">Viandes</div></div>
+    <div class="vin-item"><div><div class="vin-name">Côtes du Rhône — Beaucastel</div><div class="vin-region">Bœuf · Gibier · Fromages</div></div><div class="vin-price-btl">11€</div><div class="vin-price-verre">Viandes</div></div>
+    <div class="vin-item"><div><div class="vin-name">Champagne — Laurent-Perrier Brut</div><div class="vin-region">Apéritif · Foie gras · Desserts</div></div><div class="vin-price-btl">16€</div><div class="vin-price-verre">Apéritif</div></div>
+  </div>
+
+</div>
+
+<div class="sep"><div class="sep-line"></div><div class="sep-diamond"></div><div class="sep-line"></div></div>
+
+<footer>
+  <div>
+    <a href="index.html" class="logo-emblem" style="margin-bottom:20px;display:inline-flex">
+      <div class="logo-emblem-square"><span class="logo-emblem-mono">LS</span></div>
+      <div class="logo-emblem-text"><span class="logo-emblem-name">Les Sens</span><div class="logo-emblem-sep"></div><span class="logo-emblem-tag">Restaurant · Nice</span></div>
+    </a>
+    <p class="footer-tagline">Cuisine de saison, produits d'exception,<br>au cœur de Nice.</p>
+    <div class="footer-awards"><div class="footer-award">Gault & Millau</div><div class="footer-award">Petit Futé</div><div class="footer-award">Fait Maison</div></div>
+  </div>
+  <div>
+    <div class="footer-col-title">Navigation</div>
+    <ul class="footer-links">
+      <li><a href="menu-de-la-semaine.html">Menu de la semaine</a></li>
+      <li><a href="menu-du-moment.html">Menu du moment</a></li>
+      <li><a href="notre-carte.html">Notre carte</a></li>
+      <li><a href="carte-des-vins.html">Carte des vins</a></li>
+    </ul>
+  </div>
+  <div>
+    <div class="footer-col-title">Contact</div>
+    <ul class="footer-links">
+      <li><a href="tel:0981065700">09 81 06 57 00</a></li>
+      <li><a href="https://goo.gl/maps/Les-Sens-Nice" target="_blank">37 Rue Pastorelli, Nice</a></li>
+      <li><a href="#">Mentions légales</a></li>
+    </ul>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 Les Sens — Restaurant Nice.</div>
+    <div class="footer-copy">Lun – Ven · 12h–14h · 19h30–21h30</div>
+  </div>
+</footer>
+
+<script>
+  const nb=document.getElementById('navbar');
+  window.addEventListener('scroll',()=>{
+    nb.classList.toggle('scrolled',window.scrollY>60);
+    const sections=['roses','blancs','rouges','champagne','verre'];
+    let cur='roses';
+    sections.forEach(id=>{const el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<140)cur=id;});
+    document.querySelectorAll('.vins-nav-link').forEach(l=>{l.classList.toggle('active',l.getAttribute('href')==='#'+cur);});
+  });
+  function openMenu(){document.getElementById('mobileMenu').classList.add('open');document.body.style.overflow='hidden';}
+  function closeMenu(){document.getElementById('mobileMenu').classList.remove('open');document.body.style.overflow='';}
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target);}}),{threshold:0.08});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

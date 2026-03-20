@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menu du Moment — Les Sens · Nice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Tenor+Sans&family=Montserrat:wght@300;400;500&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream:#F5EFE4; --dark:#0E0B08; --charcoal:#1C1714; --stone:#2E2820;
+    --gold:#C9A96E; --gold-light:#E2C98A; --text-light:#D4C8B8;
+  }
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--dark);color:var(--cream);font-family:'Montserrat',sans-serif;font-weight:300;overflow-x:hidden;}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:0.4;}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:28px 60px;display:flex;align-items:center;justify-content:space-between;transition:background 0.5s,padding 0.4s;}
+  nav.scrolled{background:rgba(14,11,8,0.92);backdrop-filter:blur(12px);padding:16px 60px;border-bottom:1px solid rgba(201,169,110,0.15);}
+  .logo-emblem{display:flex;align-items:center;gap:14px;text-decoration:none;flex-shrink:0;}
+  .logo-emblem-square{position:relative;width:46px;height:46px;border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:border-color 0.3s;}
+  .logo-emblem-square::before{content:'';position:absolute;inset:4px;border:1px solid rgba(201,169,110,0.25);}
+  .logo-emblem-square::after{content:'';position:absolute;inset:-3px;background:linear-gradient(var(--gold),var(--gold)) top left/8px 2px no-repeat,linear-gradient(var(--gold),var(--gold)) top left/2px 8px no-repeat,linear-gradient(var(--gold),var(--gold)) top right/8px 2px no-repeat,linear-gradient(var(--gold),var(--gold)) top right/2px 8px no-repeat,linear-gradient(var(--gold),var(--gold)) bottom left/8px 2px no-repeat,linear-gradient(var(--gold),var(--gold)) bottom left/2px 8px no-repeat,linear-gradient(var(--gold),var(--gold)) bottom right/8px 2px no-repeat,linear-gradient(var(--gold),var(--gold)) bottom right/2px 8px no-repeat;}
+  .logo-emblem-mono{font-family:'Cinzel',serif;font-size:1.05rem;font-weight:600;color:var(--gold);position:relative;z-index:1;line-height:1;}
+  .logo-emblem-text{display:flex;flex-direction:column;}
+  .logo-emblem-name{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:300;letter-spacing:0.22em;color:var(--cream);text-transform:uppercase;line-height:1;}
+  .logo-emblem-sep{height:1px;background:linear-gradient(to right,rgba(201,169,110,0.5),transparent);margin:5px 0 4px;}
+  .logo-emblem-tag{font-family:'Tenor Sans',sans-serif;font-size:0.42rem;letter-spacing:0.45em;text-transform:uppercase;color:rgba(201,169,110,0.55);}
+  .nav-links{display:flex;gap:36px;list-style:none;}
+  .nav-links a{font-family:'Tenor Sans',sans-serif;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-light);text-decoration:none;transition:color 0.3s;position:relative;}
+  .nav-links a.active,.nav-links a:hover{color:var(--gold);}
+  .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--gold);transform:scaleX(0);transition:transform 0.3s;transform-origin:left;}
+  .nav-links a.active::after,.nav-links a:hover::after{transform:scaleX(1);}
+  .nav-cta{font-family:'Tenor Sans',sans-serif;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--dark);background:var(--gold);padding:10px 24px;text-decoration:none;transition:background 0.3s;}
+  .nav-cta:hover{background:var(--gold-light);}
+  .burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;}
+  .burger span{display:block;width:24px;height:1.5px;background:var(--gold);}
+  .mobile-menu{display:none;position:fixed;inset:0;background:rgba(14,11,8,0.98);backdrop-filter:blur(16px);z-index:300;flex-direction:column;align-items:center;justify-content:center;}
+  .mobile-menu.open{display:flex;}
+  .mobile-menu-logo{position:absolute;top:28px;left:28px;font-family:'Cinzel',serif;font-size:1.1rem;font-weight:600;color:var(--gold);letter-spacing:0.08em;}
+  .mobile-menu-close{position:absolute;top:28px;right:28px;width:40px;height:40px;background:none;border:1px solid rgba(201,169,110,0.3);color:var(--gold);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;}
+  .mobile-menu-links{display:flex;flex-direction:column;align-items:center;width:100%;}
+  .mobile-menu-link{font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,7vw,2.4rem);font-weight:300;letter-spacing:0.1em;color:var(--cream);text-decoration:none;padding:18px 40px;width:100%;text-align:center;border-bottom:1px solid rgba(201,169,110,0.07);transition:color 0.3s,background 0.3s;}
+  .mobile-menu-link:first-child{border-top:1px solid rgba(201,169,110,0.07);}
+  .mobile-menu-link:hover{color:var(--gold);background:rgba(201,169,110,0.04);}
+  .mobile-menu-cta{margin-top:36px;font-family:'Tenor Sans',sans-serif;font-size:0.72rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--dark);background:var(--gold);padding:14px 40px;text-decoration:none;}
+
+  /* HERO */
+  .page-hero{min-height:42vh;display:flex;align-items:flex-end;padding:110px 60px 64px;position:relative;overflow:hidden;}
+  .page-hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 75% 60%,rgba(201,169,110,0.08) 0%,transparent 55%),linear-gradient(160deg,#0E0B08 0%,#1C1714 60%,#141008 100%);}
+  .page-hero-bg::after{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(75deg,transparent,transparent 200px,rgba(201,169,110,0.02) 200px,rgba(201,169,110,0.02) 201px);}
+  .page-hero-content{position:relative;z-index:2;}
+  .page-hero-eyebrow{font-family:'Tenor Sans',sans-serif;font-size:0.68rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:flex;align-items:center;gap:14px;}
+  .page-hero-eyebrow::before{content:'';width:36px;height:1px;background:var(--gold);}
+  .page-hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,7vw,6.5rem);font-weight:300;line-height:0.95;color:var(--cream);}
+  .page-hero-title em{font-style:italic;color:var(--gold);display:block;}
+
+  /* PRIX BAND */
+  .prix-band{background:var(--charcoal);border-top:1px solid rgba(201,169,110,0.12);border-bottom:1px solid rgba(201,169,110,0.12);padding:36px 60px;display:flex;align-items:center;justify-content:center;gap:60px;}
+  .prix-label{font-family:'Tenor Sans',sans-serif;font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(201,169,110,0.5);margin-bottom:8px;text-align:center;}
+  .prix-value{font-family:'Cinzel',serif;font-size:2.8rem;font-weight:400;color:var(--gold);line-height:1;text-align:center;}
+  .prix-value sup{font-size:1rem;vertical-align:super;font-family:'Tenor Sans',sans-serif;color:rgba(201,169,110,0.7);}
+  .prix-note{font-family:'Cormorant Garamond',serif;font-size:0.95rem;font-style:italic;color:rgba(212,200,184,0.45);text-align:center;margin-top:6px;}
+
+  /* BODY */
+  .page-body{max-width:1100px;margin:0 auto;padding:100px 60px 120px;display:grid;grid-template-columns:1fr 320px;gap:80px;align-items:start;}
+
+  /* COURS */
+  .course-block{margin-bottom:60px;}
+  .course-header{display:flex;align-items:center;gap:20px;margin-bottom:28px;}
+  .course-num{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.2em;color:rgba(201,169,110,0.4);flex-shrink:0;}
+  .course-name{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;font-style:italic;color:var(--gold);line-height:1;}
+  .course-line{flex:1;height:1px;background:linear-gradient(to right,rgba(201,169,110,0.25),transparent);}
+  .dish{padding:20px 0;border-bottom:1px solid rgba(201,169,110,0.07);position:relative;transition:padding-left 0.3s;cursor:default;}
+  .dish:first-child{border-top:1px solid rgba(201,169,110,0.07);}
+  .dish:hover{padding-left:12px;}
+  .dish::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--gold);transform:scaleY(0);transition:transform 0.35s;transform-origin:bottom;}
+  .dish:hover::before{transform:scaleY(1);}
+  .dish-name{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:400;color:var(--cream);margin-bottom:5px;line-height:1.3;transition:color 0.3s;}
+  .dish:hover .dish-name{color:var(--gold-light);}
+  .dish-desc{font-family:'Cormorant Garamond',serif;font-size:0.9rem;font-style:italic;color:rgba(212,200,184,0.55);line-height:1.5;}
+  .dish-price{font-family:'Cinzel',serif;font-size:0.85rem;color:rgba(201,169,110,0.6);margin-top:6px;}
+  .dish-or{display:flex;align-items:center;gap:16px;padding:8px 0;color:rgba(201,169,110,0.3);font-family:'Tenor Sans',sans-serif;font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;}
+  .dish-or::before,.dish-or::after{content:'';flex:1;height:1px;background:rgba(201,169,110,0.08);}
+
+  /* DESSERTS CARTE */
+  .desserts-carte{margin-top:20px;}
+  .desserts-carte-title{font-family:'Tenor Sans',sans-serif;font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(201,169,110,0.5);margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid rgba(201,169,110,0.1);}
+  .dessert-item{display:flex;justify-content:space-between;align-items:baseline;padding:14px 0;border-bottom:1px solid rgba(201,169,110,0.06);gap:20px;}
+  .dessert-item-content{}
+  .dessert-name{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--cream);margin-bottom:3px;}
+  .dessert-desc{font-family:'Cormorant Garamond',serif;font-size:0.85rem;font-style:italic;color:rgba(212,200,184,0.5);}
+  .dessert-price{font-family:'Cinzel',serif;font-size:0.9rem;color:var(--gold);flex-shrink:0;}
+
+  /* SIDEBAR */
+  .page-sidebar{}
+  .sidebar-card{background:var(--charcoal);border:1px solid rgba(201,169,110,0.15);padding:36px 28px;position:sticky;top:100px;}
+  .sidebar-card::before{content:'';position:absolute;top:-1px;left:-1px;width:16px;height:16px;border-top:2px solid var(--gold);border-left:2px solid var(--gold);}
+  .sidebar-card::after{content:'';position:absolute;bottom:-1px;right:-1px;width:16px;height:16px;border-bottom:2px solid var(--gold);border-right:2px solid var(--gold);}
+  .sidebar-title{font-family:'Tenor Sans',sans-serif;font-size:0.62rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid rgba(201,169,110,0.12);}
+  .sidebar-row{display:flex;justify-content:space-between;align-items:baseline;padding:12px 0;border-bottom:1px solid rgba(201,169,110,0.06);}
+  .sidebar-row:last-of-type{border-bottom:none;}
+  .sidebar-row-label{font-family:'Cormorant Garamond',serif;font-size:0.95rem;font-style:italic;color:var(--text-light);}
+  .sidebar-row-price{font-family:'Cinzel',serif;font-size:1.1rem;color:var(--gold);flex-shrink:0;}
+  .sidebar-divider{height:1px;background:rgba(201,169,110,0.1);margin:20px 0;}
+  .sidebar-note{font-family:'Montserrat',sans-serif;font-size:0.65rem;font-weight:300;color:rgba(212,200,184,0.4);line-height:1.7;letter-spacing:0.03em;}
+  .sidebar-cta{display:block;margin-top:28px;font-family:'Tenor Sans',sans-serif;font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--dark);background:var(--gold);padding:14px;text-align:center;text-decoration:none;transition:background 0.3s;position:relative;overflow:hidden;}
+  .sidebar-cta::before{content:'';position:absolute;inset:0;background:var(--gold-light);transform:translateX(-100%);transition:transform 0.4s;}
+  .sidebar-cta:hover::before{transform:translateX(0);}
+  .sidebar-cta span{position:relative;z-index:1;}
+  .sidebar-ornament{text-align:center;margin:0 0 24px;}
+
+  /* SEP & FOOTER */
+  .sep{display:flex;align-items:center;gap:20px;padding:0 60px;}
+  .sep-line{flex:1;height:1px;background:rgba(201,169,110,0.12);}
+  .sep-diamond{width:5px;height:5px;background:var(--gold);transform:rotate(45deg);flex-shrink:0;}
+  .page-footnote{text-align:center;padding:0 60px 80px;max-width:700px;margin:0 auto;}
+  .page-footnote p{font-family:'Cormorant Garamond',serif;font-size:0.95rem;font-style:italic;color:rgba(212,200,184,0.45);line-height:1.8;letter-spacing:0.04em;}
+  footer{background:var(--charcoal);border-top:1px solid rgba(201,169,110,0.1);padding:52px 60px 36px;display:grid;grid-template-columns:2fr 1fr 1fr;gap:60px;}
+  .footer-tagline{font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;color:var(--text-light);line-height:1.7;margin-bottom:24px;}
+  .footer-awards{display:flex;gap:12px;flex-wrap:wrap;}
+  .footer-award{font-family:'Tenor Sans',sans-serif;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,169,110,0.3);padding:5px 10px;}
+  .footer-col-title{font-family:'Tenor Sans',sans-serif;font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;}
+  .footer-links{list-style:none;display:flex;flex-direction:column;gap:12px;}
+  .footer-links a{font-family:'Montserrat',sans-serif;font-size:0.72rem;font-weight:300;color:var(--text-light);text-decoration:none;letter-spacing:0.04em;transition:color 0.3s;}
+  .footer-links a:hover{color:var(--gold);}
+  .footer-bottom{grid-column:1/-1;border-top:1px solid rgba(201,169,110,0.08);padding-top:24px;display:flex;justify-content:space-between;align-items:center;}
+  .footer-copy{font-family:'Montserrat',sans-serif;font-size:0.65rem;font-weight:300;color:rgba(212,200,184,0.35);letter-spacing:0.06em;}
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity 0.8s ease,transform 0.8s ease;}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+
+  @media(max-width:900px){
+    nav{padding:18px 24px;}nav.scrolled{padding:14px 24px;}
+    .nav-links,.nav-cta{display:none;}.burger{display:flex;}
+    .page-hero{padding:0 24px 48px;min-height:35vh;}
+    .prix-band{padding:28px 24px;flex-direction:column;gap:28px;}
+    .page-body{grid-template-columns:1fr;padding:64px 24px 80px;gap:48px;}
+    .sidebar-card{position:static;}
+    .sep{padding:0 24px;}.page-footnote{padding:0 24px 60px;}
+    footer{grid-template-columns:1fr;padding:40px 24px 28px;gap:32px;}
+    .footer-bottom{flex-direction:column;gap:10px;text-align:center;}
+  }
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="index.html" class="logo-emblem">
+    <div class="logo-emblem-square"><span class="logo-emblem-mono">LS</span></div>
+    <div class="logo-emblem-text">
+      <span class="logo-emblem-name">Les Sens</span>
+      <div class="logo-emblem-sep"></div>
+      <span class="logo-emblem-tag">Restaurant · Nice</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="menu-de-la-semaine.html">Menu de la semaine</a></li>
+    <li><a href="menu-du-moment.html" class="active">Menu du moment</a></li>
+    <li><a href="notre-carte.html">Notre carte</a></li>
+    <li><a href="carte-des-vins.html">Carte des vins</a></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:16px">
+    <a href="tel:0981065700" class="nav-cta">Réserver</a>
+    <div class="burger" onclick="openMenu()"><span></span><span></span><span></span></div>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-logo">LS</div>
+  <button class="mobile-menu-close" onclick="closeMenu()">✕</button>
+  <div class="mobile-menu-links">
+    <a href="menu-de-la-semaine.html" class="mobile-menu-link" onclick="closeMenu()">Menu de la semaine</a>
+    <a href="menu-du-moment.html"     class="mobile-menu-link" onclick="closeMenu()">Menu du moment</a>
+    <a href="notre-carte.html"        class="mobile-menu-link" onclick="closeMenu()">Notre carte</a>
+    <a href="carte-des-vins.html"     class="mobile-menu-link" onclick="closeMenu()">Carte des vins</a>
+  </div>
+  <a href="tel:0981065700" class="mobile-menu-cta" onclick="closeMenu()">09 81 06 57 00</a>
+</div>
+
+<section class="page-hero">
+  <div class="page-hero-bg"></div>
+  <div class="page-hero-content reveal">
+    <div class="page-hero-eyebrow">Cuisine gastronomique</div>
+    <h1 class="page-hero-title">Menu du <em>moment.</em></h1>
+  </div>
+</section>
+
+<div class="prix-band reveal">
+  <div>
+    <div class="prix-label">Menu complet</div>
+    <div class="prix-value">45<sup>€</sup></div>
+    <div class="prix-note">Entrée · Plat · Dessert</div>
+  </div>
+</div>
+
+<div class="page-body">
+  <div>
+    <div class="course-block reveal">
+      <div class="course-header">
+        <span class="course-num">01</span>
+        <span class="course-name">Entrées</span>
+        <div class="course-line"></div>
+      </div>
+      <div class="dish">
+        <div class="dish-name">Terrine de lapin au foie gras</div>
+        <div class="dish-desc">Pistaches et abricots moelleux, sanguins à l'huile</div>
+      </div>
+      <div class="dish-or">ou</div>
+      <div class="dish">
+        <div class="dish-name">Carpaccio de poulpe</div>
+        <div class="dish-desc">Salade de pomme de terre ratte, huile de cébette, sauce rouille</div>
+      </div>
+      <div class="dish-or">ou</div>
+      <div class="dish">
+        <div class="dish-name">Soupe de petits pois et foie gras poêlé</div>
+        <div class="dish-desc">Velouté délicat, foie gras sauté à la minute</div>
+      </div>
+    </div>
+
+    <div class="course-block reveal">
+      <div class="course-header">
+        <span class="course-num">02</span>
+        <span class="course-name">Plats</span>
+        <div class="course-line"></div>
+      </div>
+      <div class="dish">
+        <div class="dish-name">Lieu jaune poché</div>
+        <div class="dish-desc">Chaud-froid d'huîtres, radis, concombre, pomme verte, sabayon au cidre</div>
+      </div>
+      <div class="dish-or">ou</div>
+      <div class="dish">
+        <div class="dish-name">Persillé de bœuf Black Angus irlandais</div>
+        <div class="dish-desc">Feuilleté de pomme de terre façon piémontaise, champignon de Paris grillé et fumé</div>
+      </div>
+    </div>
+
+    <div class="course-block reveal">
+      <div class="course-header">
+        <span class="course-num">03</span>
+        <span class="course-name">Desserts</span>
+        <div class="course-line"></div>
+      </div>
+      <div class="dish">
+        <div class="dish-name">Biscuit et crémeux à la cacahuète</div>
+        <div class="dish-desc">Mousse légère à la vanille, confit exotique et coque de macaron</div>
+      </div>
+      <div class="dish-or">ou</div>
+      <div class="dish">
+        <div class="dish-name">Crumble à la noisette</div>
+        <div class="dish-desc">Crémeux citron et ganache montée à la violette, meringue craquante</div>
+      </div>
+    </div>
+
+    <!-- Desserts à la carte -->
+    <div class="desserts-carte reveal">
+      <div class="desserts-carte-title">Desserts de notre pâtissière — à la carte</div>
+      <div class="dessert-item">
+        <div class="dessert-item-content">
+          <div class="dessert-name">Noisette, chocolat noir, Bailey's</div>
+          <div class="dessert-desc">Cookies feuilleté, glace Bailey's, crème à la cardamome</div>
+        </div>
+        <div class="dessert-price">12€</div>
+      </div>
+      <div class="dessert-item">
+        <div class="dessert-item-content">
+          <div class="dessert-name">Exotique, cacahuète, vanille</div>
+          <div class="dessert-desc">Biscuit crémeux, mousse vanille, confit exotique, coque macaron</div>
+        </div>
+        <div class="dessert-price">12€</div>
+      </div>
+      <div class="dessert-item">
+        <div class="dessert-item-content">
+          <div class="dessert-name">Citron, violette, noisette</div>
+          <div class="dessert-desc">Crumble noisette, crémeux citron, ganache violette, meringue</div>
+        </div>
+        <div class="dessert-price">12€</div>
+      </div>
+      <div class="dessert-item">
+        <div class="dessert-item-content">
+          <div class="dessert-name">Soufflé au citron du pays</div>
+          <div class="dessert-desc">Sorbet citron maison</div>
+        </div>
+        <div class="dessert-price">13€</div>
+      </div>
+      <div class="dessert-item">
+        <div class="dessert-item-content">
+          <div class="dessert-name">Soufflé au Grand Marnier</div>
+          <div class="dessert-desc">Sorbet exotique maison</div>
+        </div>
+        <div class="dessert-price">14€</div>
+      </div>
+      <div class="dessert-item">
+        <div class="dessert-item-content">
+          <div class="dessert-name">Assiette de fromages frais et affinés</div>
+          <div class="dessert-desc">Sélection du moment</div>
+        </div>
+        <div class="dessert-price">12€</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-sidebar reveal">
+    <div class="sidebar-card">
+      <div class="sidebar-ornament">
+        <svg viewBox="0 0 120 60" width="100" xmlns="http://www.w3.org/2000/svg">
+          <line x1="10" y1="30" x2="45" y2="30" stroke="#C9A96E" stroke-width="0.6" stroke-opacity="0.4"/>
+          <rect x="53" y="26" width="8" height="8" transform="rotate(45 57 30)" fill="none" stroke="#C9A96E" stroke-width="0.8" stroke-opacity="0.6"/>
+          <circle cx="57" cy="30" r="2" fill="#C9A96E" fill-opacity="0.4"/>
+          <line x1="69" y1="30" x2="110" y2="30" stroke="#C9A96E" stroke-width="0.6" stroke-opacity="0.4"/>
+        </svg>
+      </div>
+      <div class="sidebar-title">Le menu</div>
+      <div class="sidebar-row">
+        <span class="sidebar-row-label">Menu gastronomique</span>
+        <span class="sidebar-row-price">45€</span>
+      </div>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-title" style="margin-bottom:16px">Suppléments</div>
+      <div class="sidebar-row">
+        <span class="sidebar-row-label">Desserts à la carte</span>
+        <span class="sidebar-row-price">12–14€</span>
+      </div>
+      <div class="sidebar-row">
+        <span class="sidebar-row-label">Fromages</span>
+        <span class="sidebar-row-price">12€</span>
+      </div>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-note">Prix nets en euros, service compris. Glaces et pains maison. Carte renouvelée au fil des saisons.</div>
+      <a href="tel:0981065700" class="sidebar-cta"><span>Réserver — 09 81 06 57 00</span></a>
+    </div>
+  </div>
+</div>
+
+<div class="sep"><div class="sep-line"></div><div class="sep-diamond"></div><div class="sep-line"></div></div>
+<div class="page-footnote reveal">
+  <p>Notre menu du moment reflète l'inspiration du chef et les meilleurs produits de saison. Chaque plat est pensé comme un voyage sensoriel, entre tradition française et créativité méditerranéenne.</p>
+</div>
+
+<footer>
+  <div>
+    <a href="index.html" class="logo-emblem" style="margin-bottom:20px;display:inline-flex">
+      <div class="logo-emblem-square"><span class="logo-emblem-mono">LS</span></div>
+      <div class="logo-emblem-text"><span class="logo-emblem-name">Les Sens</span><div class="logo-emblem-sep"></div><span class="logo-emblem-tag">Restaurant · Nice</span></div>
+    </a>
+    <p class="footer-tagline">Cuisine de saison, produits d'exception,<br>au cœur de Nice.</p>
+    <div class="footer-awards"><div class="footer-award">Gault & Millau</div><div class="footer-award">Petit Futé</div><div class="footer-award">Fait Maison</div></div>
+  </div>
+  <div>
+    <div class="footer-col-title">Navigation</div>
+    <ul class="footer-links">
+      <li><a href="menu-de-la-semaine.html">Menu de la semaine</a></li>
+      <li><a href="menu-du-moment.html">Menu du moment</a></li>
+      <li><a href="notre-carte.html">Notre carte</a></li>
+      <li><a href="carte-des-vins.html">Carte des vins</a></li>
+    </ul>
+  </div>
+  <div>
+    <div class="footer-col-title">Contact</div>
+    <ul class="footer-links">
+      <li><a href="tel:0981065700">09 81 06 57 00</a></li>
+      <li><a href="https://goo.gl/maps/Les-Sens-Nice" target="_blank">37 Rue Pastorelli, Nice</a></li>
+      <li><a href="#">Mentions légales</a></li>
+    </ul>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 Les Sens — Restaurant Nice.</div>
+    <div class="footer-copy">Lun – Ven · 12h–14h · 19h30–21h30</div>
+  </div>
+</footer>
+
+<script>
+  const nb=document.getElementById('navbar');
+  window.addEventListener('scroll',()=>nb.classList.toggle('scrolled',window.scrollY>60));
+  function openMenu(){document.getElementById('mobileMenu').classList.add('open');document.body.style.overflow='hidden';}
+  function closeMenu(){document.getElementById('mobileMenu').classList.remove('open');document.body.style.overflow='';}
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target);}}),{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
